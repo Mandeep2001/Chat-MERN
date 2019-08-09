@@ -1,0 +1,7 @@
+L'esercizio comprende 2 parti principali, il login (gestione degli utenti e delle pagine private) e la chat (di gruppo ed individuale).
+
+Prima di tutto devo creare le API e metterle a disposizione di react. Le API che serviranno sono:
+  - Per la gestione degli utenti:
+    1. /login -> login
+    2. /register -> Registrazione
+    3. /:username -> Visualizzazione profilo

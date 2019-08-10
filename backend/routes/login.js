@@ -6,6 +6,8 @@ const { loginValidation } = require("../validation/authvalidation");
 
 // Gestione link '/login'
 router.post("/", async (req, res) => {
+  console.log("Entrato", req.body.email);
+
   // Data validation
   const { error } = loginValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);

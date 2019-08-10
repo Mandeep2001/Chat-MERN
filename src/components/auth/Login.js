@@ -15,6 +15,7 @@ class Login extends Component {
           }}
           onSubmit={(values, { setSubmitting }) => {
             console.log(values);
+            this.props.onLogin(values);
           }}
           validationSchema={Yup.object().shape({
             email: Yup.string()
@@ -91,7 +92,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProprs = dispatch => {
-  return { onLogin: () => dispatch(loginAction()) };
+  return { onLogin: user => dispatch(loginAction(user)) };
 };
 
 export default connect(

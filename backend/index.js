@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 // Routes
 const loginRoute = require("./routes/login");
@@ -19,6 +20,7 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true }, () => {
 
 // Middlewares
 app.use(express.json());
+app.use(cors());
 
 // Route Midllewares
 app.use("/", userRoute);

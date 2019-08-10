@@ -13,9 +13,17 @@ class Login extends Component {
             email: "",
             password: ""
           }}
-          onSubmit={(values, { setSubmitting }) => {
-            console.log(values);
-            this.props.onLogin(values);
+          onSubmit={(values, actions) => {
+            this.props
+              .onLogin(values)
+              .then(() => {
+                this.props.history.push("/");
+              })
+              .catch(e => {
+                console.log("Errore", e);
+                actions.setFieldError("email", e);
+              })
+              .finally(() => actions.setSubmitting(false));
           }}
           validationSchema={Yup.object().shape({
             email: Yup.string()
@@ -53,6 +61,7 @@ class Login extends Component {
                     placeholder="Enter email"
                     required
                   />
+                  <p className="invalid-feedback d-block">{errors.email}</p>
                   {errors.email && touched.email && (
                     <div className="invalid-feedback">{errors.email}</div>
                   )}
@@ -88,14 +97,19 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => {
-  return { user: state.user };
+  return {
+    user: state.authReducer.user,
+    loginError: state.authReducer.loginError
+  };
 };
 
-const mapDispatchToProprs = dispatch => {
-  return { onLogin: user => dispatch(loginAction(user)) };
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogin: user => dispatch(loginAction(user))
+  };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProprs
+  mapDispatchToProps
 )(Login);

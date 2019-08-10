@@ -1,3 +1,3 @@
 export const loginAction = () => {
-  return { type: "LOGIN" };
+  return dispatch => {};
 };

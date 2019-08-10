@@ -94,4 +94,7 @@ const mapDispatchToProprs = dispatch => {
   return { onLogin: () => dispatch(loginAction()) };
 };
 
-export default connect()(Login);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProprs
+)(Login);

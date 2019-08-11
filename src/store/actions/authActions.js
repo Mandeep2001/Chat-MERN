@@ -10,7 +10,14 @@ export const loginAction = user => {
         })
         .then(responce => {
           if (responce.data.isSuccess) {
-            dispatch({ type: "LOGIN", user: responce.data.user });
+            dispatch({
+              type: "LOGIN",
+              user: {
+                info: responce.data.user,
+                token: responce.data.token,
+                logged: true
+              }
+            });
             resolve();
           } else {
             dispatch({ type: "LOGIN_ERROR", error: responce.data.error });
@@ -38,7 +45,10 @@ export const registerAction = user => {
         })
         .then(responce => {
           if (responce.data.isSuccess) {
-            dispatch({ type: "REGISTER", user: responce.data.user });
+            dispatch({
+              type: "REGISTER",
+              user: responce.data.user
+            });
             resolve();
           } else {
             dispatch({ type: "REGISTER_ERROR", error: responce.data.error });

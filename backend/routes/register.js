@@ -10,7 +10,7 @@ router.post("/", async (req, res) => {
   if (error)
     return res.send({
       isSuccess: false,
-      error: "L'indirizzo e-mail che hai inserito non esiste."
+      error: "Inserisci un indirizzo e-mail valido."
     });
 
   // Check if the e-mail already exists in database

@@ -17,7 +17,7 @@ export class Register extends Component {
           }}
           onSubmit={(values, actions) => {
             this.props
-              .onLogin(values)
+              .onRegister(values)
               .then(() => {
                 this.props.history.push("/login");
               })
@@ -51,7 +51,7 @@ export class Register extends Component {
                 }
                 noValidate
               >
-                <h2 className="">Login</h2>
+                <h2 className="">Sign Up</h2>
                 <div className="pt-3 form-group">
                   <label htmlFor="email">Nome</label>
                   <Field
@@ -143,14 +143,14 @@ export class Register extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.authReducer.user,
-    registerError: state.authReducer.registerError
+    user: state.auth.user,
+    registerError: state.auth.registerError
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLogin: user => dispatch(registerAction(user))
+    onRegister: user => dispatch(registerAction(user))
   };
 };
 

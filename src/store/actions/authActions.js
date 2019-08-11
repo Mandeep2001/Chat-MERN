@@ -18,6 +18,35 @@ export const loginAction = user => {
           }
         })
         .catch(error => {
+          // TODO: gestire errore
+          console.log("Errore:", error);
+          console.log(error);
+        });
+    });
+  };
+};
+
+export const registerAction = user => {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post("http://localhost:5000/register", {
+          name: user.name,
+          username: user.username,
+          email: user.email,
+          password: user.password
+        })
+        .then(responce => {
+          if (responce.data.isSuccess) {
+            dispatch({ type: "REGISTER", user: responce.data.user });
+            resolve();
+          } else {
+            dispatch({ type: "REGISTER_ERROR", error: responce.data.error });
+            reject(responce.data.error);
+          }
+        })
+        .catch(error => {
+          // TODO: gestire errore
           console.log("Errore:", error);
           console.log(error);
         });

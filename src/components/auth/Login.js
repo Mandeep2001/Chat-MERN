@@ -21,7 +21,7 @@ class Login extends Component {
               })
               .catch(e => {
                 console.log("Errore", e);
-                actions.setFieldError("email", e);
+                actions.setFieldError("general", e);
               })
               .finally(() => actions.setSubmitting(false));
           }}
@@ -61,7 +61,6 @@ class Login extends Component {
                     placeholder="Enter email"
                     required
                   />
-                  <p className="invalid-feedback d-block">{errors.email}</p>
                   {errors.email && touched.email && (
                     <div className="invalid-feedback">{errors.email}</div>
                   )}
@@ -87,6 +86,7 @@ class Login extends Component {
                 <button type="submit" className="btn btn-primary">
                   Submit
                 </button>
+                <p className="invalid-feedback d-block">{errors.general}</p>
               </Form>
             );
           }}

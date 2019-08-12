@@ -1,30 +1,48 @@
 import React, { Component } from "react";
 import validator from "email-validator";
 
-export class LoginForm extends Component {
+export class RegisterForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       data: {
         email: "",
-        password: ""
+        password: "",
+        name: "",
+        username: ""
       },
       errors: {
         email: null,
         password: null,
+        name: "",
+        username: "",
         global: null
       },
       isSubmitted: false
     };
   }
 
-  validateForm = ({ email, password }) => {
+  validateForm = ({ email, password, username, name }) => {
     let errors = {};
     if (!password) {
       errors = {
         ...errors,
         password: "Inserisci una password."
+      };
+    }
+
+    if (!username) {
+      errors = {
+        ...errors,
+        username: "Inserisci un nome utente."
+      };
+    }
+
+    if (!name) {
+      errors = {
+        ...errors,
+        name: "Inserisci un nome."
       };
     }
 
@@ -66,12 +84,44 @@ export class LoginForm extends Component {
         onSubmit={this.handleSubmit}
         noValidate
       >
-        <h2 className="pb-3">Login</h2>
+        <h2 className="pb-3">Sign Up</h2>
         {errors.global && (
           <div className="alert alert-danger" role="alert">
             {errors.global}
           </div>
         )}
+        <div className="form-group">
+          <label htmlFor="name">Nome</label>
+          <input
+            type="text"
+            className={"form-control"}
+            id="name"
+            name="name"
+            onChange={this.handleChange}
+            value={data.name}
+            aria-describedby="nameHelp"
+            placeholder="Inserisci il nome"
+            required
+          />
+          {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+        </div>
+        <div className="form-group">
+          <label htmlFor="username">Nome utente</label>
+          <input
+            type="text"
+            className={"form-control"}
+            id="username"
+            name="username"
+            onChange={this.handleChange}
+            value={data.username}
+            aria-describedby="usernameHelp"
+            placeholder="Inserisci il nome utente"
+            required
+          />
+          {errors.username && (
+            <div className="invalid-feedback">{errors.username}</div>
+          )}
+        </div>
         <div className="form-group">
           <label htmlFor="email">Email address</label>
           <input
@@ -93,9 +143,7 @@ export class LoginForm extends Component {
           <label htmlFor="password">Password</label>
           <input
             type="password"
-            className={
-              errors.password ? "is-invalid form-control" : "form-control"
-            }
+            className={"form-control"}
             id="password"
             name="password"
             onChange={this.handleChange}
@@ -108,12 +156,14 @@ export class LoginForm extends Component {
             <div className="invalid-feedback">{errors.password}</div>
           )}
         </div>
+
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
+        <p className="invalid-feedback d-block">{errors.general}</p>
       </form>
     );
   }
 }
 
-export default LoginForm;
+export default RegisterForm;

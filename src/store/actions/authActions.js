@@ -33,6 +33,7 @@ export const loginAction = user => {
 };
 
 export const registerAction = user => {
+  console.log("Entrato");
   return dispatch => {
     return new Promise((resolve, reject) => {
       axios

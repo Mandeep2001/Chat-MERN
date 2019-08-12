@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const User = require("../modules/User");
+const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { loginValidation } = require("../validation/authvalidation");
@@ -8,11 +8,22 @@ const { loginValidation } = require("../validation/authvalidation");
 router.post("/", async (req, res) => {
   // Data validation
   const { error } = loginValidation(req.body);
-  if (error)
+  if (error) {
     return res.send({
       isSuccess: false,
       error: error.details[0].message
     });
+  }
+
+  // User.findOne({ email: req.body.email }).then(user => {
+  //   if (user) {
+  //   } else {
+  //     res.status(400).json({
+  //       isSuccess: false,
+  //       error: "La password è errata."
+  //     });
+  //   }
+  // });
 
   // Check if the email exists
   const user = await User.findOne({ email: req.body.email });

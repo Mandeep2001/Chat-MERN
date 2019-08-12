@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-function SignedOutLinks({ user }) {
+function SignedInLinks({ user }) {
   return (
     <ul className="navbar-nav ml-auto">
       <li className="nav-item">
@@ -10,20 +10,17 @@ function SignedOutLinks({ user }) {
         </NavLink>
       </li>
       <li className="nav-item">
-        <NavLink
-          to={user ? "/" + user.info.username : "/login"}
-          className="nav-link"
-        >
-          Accedi
+        <NavLink to="/chat" className="nav-link">
+          Chat
         </NavLink>
       </li>
       <li className="nav-item">
-        <NavLink to="/register" className="nav-link">
-          Iscriviti
+        <NavLink to={"/" + user.info.username} className="nav-link">
+          {user.info.username}
         </NavLink>
       </li>
     </ul>
   );
 }
 
-export default SignedOutLinks;
+export default SignedInLinks;

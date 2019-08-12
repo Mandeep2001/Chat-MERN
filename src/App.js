@@ -1,23 +1,32 @@
 import React from "react";
-import Navbar from "./components/layout/Navbar";
+import Navbar from "./components/layout/navbar/Navbar";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import PrivateRoute from "./components/hoc/PrivateRoute";
+import GuestRoute from "./components/hoc/GuestRoute";
+import { connect } from "react-redux";
 import Home from "./components/home/Home";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import ProfileDetails from "./components/user/ProfileDetails";
 
-function App() {
+function App(props) {
   return (
     <BrowserRouter>
       <div className="App h-100 d-flex flex-column">
         <Navbar />
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
+          <GuestRoute exact path="/login" component={Login} />
+          <GuestRoute exact path="/register" component={Register} />
+          <PrivateRoute path="/:username" component={ProfileDetails} />
         </Switch>
       </div>
     </BrowserRouter>
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return { isLogged: state.auth.logged };
+};
+
+export default connect(mapStateToProps)(App);

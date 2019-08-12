@@ -13,10 +13,9 @@ export const loginAction = user => {
             dispatch({
               type: "LOGIN",
               user: {
-                info: responce.data.user,
-                token: responce.data.token,
-                logged: true
-              }
+                info: responce.data.user
+              },
+              token: responce.data.token
             });
             resolve();
           } else {

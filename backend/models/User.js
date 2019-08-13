@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+// const uniqueValidator = require("mongoose-unique-validator");
 
 const schema = new mongoose.Schema(
   {
@@ -33,6 +34,10 @@ schema.methods.isValidPassword = function isValidPassword(password) {
   return bcrypt.compareSync(password, this.password);
 };
 
+schema.methods.setPassword = function setPassword(password) {
+  this.password = bcrypt.hashSync(password, 10);
+};
+
 schema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
     { _id: this._id, email: this.email, username: this.username },
@@ -42,6 +47,7 @@ schema.methods.generateJWT = function generateJWT() {
 
 schema.methods.toAuthJSON = function toAuthJSON() {
   return {
+    _id: this._id,
     email: this.email,
     username: this.username,
     token: this.generateJWT()

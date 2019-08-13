@@ -13,11 +13,11 @@ export default function authReducer(state = initialState, action) {
         loginError: null
       };
     case "LOGIN_ERROR":
-      return { ...state, loginError: action.error, user: null };
+      return { ...state, loginError: action.error, user: { token: null } };
     case "REGISTER":
-      return { ...state, registerError: null };
+      return { ...state, registerError: null, user: action.user };
     case "REGISTER_ERROR":
-      return { ...state, registerError: action.error };
+      return { ...state, registerError: action.error, user: { token: null } };
     case "LOGOUT":
       return initialState;
 

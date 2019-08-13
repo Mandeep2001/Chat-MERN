@@ -42,15 +42,17 @@ export const registerAction = user => {
           password: user.password
         })
         .then(responce => {
-          if (responce.data.isSuccess) {
+          if (responce.data.error) {
+            dispatch({ type: "REGISTER_ERROR", error: responce.data.error });
+            reject(responce.data.error);
+          } else {
+            console.log("Register:", responce.data.user);
+            localStorage.chatJWT = responce.data.user.token;
             dispatch({
               type: "REGISTER",
               user: responce.data.user
             });
             resolve();
-          } else {
-            dispatch({ type: "REGISTER_ERROR", error: responce.data.error });
-            reject(responce.data.error);
           }
         })
         .catch(error => {

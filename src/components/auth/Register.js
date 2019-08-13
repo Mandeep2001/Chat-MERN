@@ -6,12 +6,10 @@ import RegisterForm from "./RegisterForm";
 export class Register extends Component {
   handleSubmit = credentials => {
     return new Promise((resolve, reject) => {
-      console.log(0);
       this.props
         .onRegister(credentials)
         .then(() => {
-          console.log("Inserito");
-          this.props.history.push("/login");
+          this.props.history.push("/");
           resolve();
         })
         .catch(err => {

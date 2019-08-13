@@ -3,16 +3,21 @@ const Joi = require("@hapi/joi");
 // Register validation
 const registerValidation = data => {
   const schema = {
-    username: Joi.string()
-      .min(6)
-      .required(),
+    username: Joi.string().required(),
     password: Joi.string()
-      .min(6)
-      .required(),
+      .min(8)
+      .required()
+      .error(errors => {
+        return {
+          message: "La password deve contenere almeno 8 caratteri."
+        };
+      }),
     email: Joi.string()
-      .min(6)
       .email()
-      .required(),
+      .required()
+      .error(errors => {
+        return { message: "Inserisci un indirizzo e-mail valido." };
+      }),
     name: Joi.string().required()
   };
   return Joi.validate(data, schema);
@@ -21,12 +26,19 @@ const registerValidation = data => {
 const loginValidation = data => {
   const schema = {
     password: Joi.string()
-      .min(6)
-      .required(),
+      .min(8)
+      .required()
+      .error(errors => {
+        return {
+          message: "La password deve contenere almeno 8 caratteri."
+        };
+      }),
     email: Joi.string()
-      .min(6)
       .email()
       .required()
+      .error(errors => {
+        return { message: "Inserisci un indirizzo e-mail valido." };
+      })
   };
   return Joi.validate(data, schema);
 };

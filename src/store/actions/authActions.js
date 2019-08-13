@@ -13,6 +13,7 @@ export const loginAction = user => {
             dispatch({ type: "LOGIN_ERROR", error: responce.data.error });
             reject(responce.data.error);
           } else {
+            localStorage.chatJWT = responce.data.user.token;
             dispatch({
               type: "LOGIN",
               user: responce.data.user
@@ -31,7 +32,6 @@ export const loginAction = user => {
 };
 
 export const registerAction = user => {
-  console.log("Entrato");
   return dispatch => {
     return new Promise((resolve, reject) => {
       axios
@@ -59,5 +59,12 @@ export const registerAction = user => {
           console.log(error);
         });
     });
+  };
+};
+
+export const logoutAction = user => {
+  localStorage.removeItem("chatJWT");
+  return {
+    type: "LOGOUT"
   };
 };

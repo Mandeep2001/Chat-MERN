@@ -1,5 +1,5 @@
 const initialState = {
-  user: null,
+  user: { token: null },
   loginError: null,
   registerError: null
 };
@@ -15,9 +15,11 @@ export default function authReducer(state = initialState, action) {
     case "LOGIN_ERROR":
       return { ...state, loginError: action.error, user: null };
     case "REGISTER":
-      return state;
+      return { ...state, registerError: null };
     case "REGISTER_ERROR":
       return { ...state, registerError: action.error };
+    case "LOGOUT":
+      return initialState;
 
     default:
       return state;

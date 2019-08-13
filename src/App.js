@@ -31,7 +31,7 @@ function App(props) {
 }
 
 const mapStateToProps = state => {
-  return { isLogged: state.auth.user };
+  return { isLogged: !!state.auth.user.token };
 };
 
 export default connect(mapStateToProps)(App);

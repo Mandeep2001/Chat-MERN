@@ -20,9 +20,6 @@ router.post("/", async (req, res) => {
     if (user && user.isValidPassword(req.body.password)) {
       res.json({ user: user.toAuthJSON() });
     } else {
-      // res.status(400).json({
-      //   error: "Credenziali errate."
-      // });
       res.json({
         error: "Credenziali errate."
       });

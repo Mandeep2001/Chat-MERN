@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import jwt from "jwt-decode";
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
@@ -16,6 +17,12 @@ const store = createStore(
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
+
+if (localStorage.chatJWT) {
+  const { _id, email, username } = jwt(localStorage.chatJWT);
+  const user = { token: localStorage.chatJWT, _id, username, email };
+  store.dispatch({ type: "LOGIN", user });
+}
 
 ReactDOM.render(
   // Passo lo store al provider che si occupa di collegarlo all'app

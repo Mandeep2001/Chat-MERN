@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-function SignedInLinks({ user }) {
+function SignedInLinks({ user, logout }) {
   return (
     <ul className="navbar-nav ml-auto">
       <li className="nav-item">
@@ -19,6 +19,9 @@ function SignedInLinks({ user }) {
           {user.username}
         </NavLink>
       </li>
+      <button className="btn btn-primary ml-3" onClick={logout}>
+        Logout
+      </button>
     </ul>
   );
 }

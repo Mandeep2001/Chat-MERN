@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
+import { logoutAction } from "../../../store/actions/authActions";
 
 function Navbar(props) {
-  const { user } = props;
+  const { user, isLogged, logoutAction } = props;
 
-  const navLinks = user ? (
-    <SignedInLinks user={user} />
+  const navLinks = isLogged ? (
+    <SignedInLinks user={user} logout={logoutAction} />
   ) : (
     <SignedOutLinks user={user} />
   );
@@ -29,7 +30,10 @@ function Navbar(props) {
 }
 
 const mapStateToProps = state => {
-  return { user: state.auth.user };
+  return { user: state.auth.user, isLogged: !!state.auth.user.token };
 };
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(
+  mapStateToProps,
+  { logoutAction }
+)(Navbar);

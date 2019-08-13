@@ -7,11 +7,12 @@ const { registerValidation } = require("../validation/authvalidation");
 router.post("/", async (req, res) => {
   // Data validation
   const { error } = registerValidation(req.body);
-  if (error)
+  if (error) {
     return res.send({
       isSuccess: false,
-      error: "Inserisci un indirizzo e-mail valido."
+      error: error.details[0].message
     });
+  }
 
   // Check if the e-mail already exists in database
   const emailExist = await User.findOne({ email: req.body.email });
@@ -41,7 +42,6 @@ router.post("/", async (req, res) => {
   });
   try {
     const savedUser = await user.save();
-    console.log(savedUser);
     res.send({
       isSuccess: true,
       id: savedUser._id

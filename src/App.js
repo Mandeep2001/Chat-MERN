@@ -18,7 +18,12 @@ function App(props) {
           <Route exact path="/" component={Home} />
           <GuestRoute exact path="/login" component={Login} />
           <GuestRoute exact path="/register" component={Register} />
-          <PrivateRoute path="/:username" component={ProfileDetails} />
+          <PrivateRoute
+            exact
+            path="/:username"
+            isLogged={props.isLogged}
+            component={ProfileDetails}
+          />
         </Switch>
       </div>
     </BrowserRouter>
@@ -26,7 +31,7 @@ function App(props) {
 }
 
 const mapStateToProps = state => {
-  return { isLogged: state.auth.logged };
+  return { isLogged: state.auth.user };
 };
 
 export default connect(mapStateToProps)(App);

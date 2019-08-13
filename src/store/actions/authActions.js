@@ -9,24 +9,22 @@ export const loginAction = user => {
           password: user.password
         })
         .then(responce => {
-          if (responce.data.isSuccess) {
-            dispatch({
-              type: "LOGIN",
-              user: {
-                info: responce.data.user
-              },
-              token: responce.data.token
-            });
-            resolve();
-          } else {
+          if (responce.data.error) {
             dispatch({ type: "LOGIN_ERROR", error: responce.data.error });
             reject(responce.data.error);
+          } else {
+            dispatch({
+              type: "LOGIN",
+              user: responce.data.user
+            });
+            resolve();
           }
         })
         .catch(error => {
           // TODO: gestire errore
-          console.log("Errore:", error);
-          console.log(error);
+          console.log("Errore", error);
+          dispatch({ type: "LOGIN_ERROR", error: error });
+          reject(error);
         });
     });
   };

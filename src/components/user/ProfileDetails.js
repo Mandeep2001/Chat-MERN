@@ -3,10 +3,9 @@ import { connect } from "react-redux";
 
 export class ProfileDetails extends Component {
   render() {
-    console.log(this.props);
     return (
       <div>
-        <h2>{this.props.user.info.username}</h2>
+        <h2>{this.props.user.username}</h2>
       </div>
     );
   }

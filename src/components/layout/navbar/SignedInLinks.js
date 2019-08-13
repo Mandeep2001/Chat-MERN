@@ -15,8 +15,8 @@ function SignedInLinks({ user }) {
         </NavLink>
       </li>
       <li className="nav-item">
-        <NavLink to={"/" + user.info.username} className="nav-link">
-          {user.info.username}
+        <NavLink to={"/" + user.username} className="nav-link">
+          {user.username}
         </NavLink>
       </li>
     </ul>

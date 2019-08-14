@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import io from "socket.io-client";
 import jwt from "jwt-decode";
 import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
@@ -23,6 +24,13 @@ if (localStorage.chatJWT) {
   const user = { token: localStorage.chatJWT, _id, username, email };
   store.dispatch({ type: "LOGIN", user });
 }
+
+const socket = io("http://localhost:5000");
+// const socket = io.connect("http://localhost:5000");
+
+// socket.on("connect", () => {
+//   console.log("connected");
+// });
 
 ReactDOM.render(
   // Passo lo store al provider che si occupa di collegarlo all'app

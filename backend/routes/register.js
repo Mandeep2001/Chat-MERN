@@ -34,28 +34,6 @@ router.post("/", async (req, res) => {
     .save()
     .then(res.json({ user: user.toAuthJSON() }))
     .catch(error => res.json({ error }));
-
-  // Check if the e-mail already exists in database
-
-  // Hash the password
-  // const salt = bcrypt.genSalt(10);
-  // const hashPassword = bcrypt.hash(req.body.password, salt);
-
-  // const user = new User({
-  //   username: req.body.username,
-  //   password: hashPassword,
-  //   email: req.body.email,
-  //   name: req.body.name
-  // });
-  // try {
-  //   const savedUser = user.save();
-  //   res.send({
-  //     isSuccess: true,
-  //     id: savedUser._id
-  //   });
-  // } catch (error) {
-  //   res.status(400).send(error);
-  // }
 });
 
 module.exports = router;

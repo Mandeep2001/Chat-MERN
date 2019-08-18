@@ -1,6 +1,6 @@
 import React from "react";
 import Chat from "./chatSection/Chat";
-import ChatSidebar from "./ChatSidebar";
+import ChatSidebar from "./sidebarSection/ChatSidebar";
 
 function ChatPage() {
   return (

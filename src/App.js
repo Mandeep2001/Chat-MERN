@@ -8,6 +8,7 @@ import Home from "./components/home/Home";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import ProfileDetails from "./components/user/ProfileDetails";
+import Chat from "./components/chat/ChatPage";
 
 function App(props) {
   return (
@@ -18,6 +19,12 @@ function App(props) {
           <Route exact path="/" component={Home} />
           <GuestRoute exact path="/login" component={Login} />
           <GuestRoute exact path="/register" component={Register} />
+          <PrivateRoute
+            exavt
+            path="/chat"
+            isLogged={props.isLogged}
+            component={Chat}
+          />
           <PrivateRoute
             exact
             path="/:username"

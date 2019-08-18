@@ -22,6 +22,7 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true }, () => {
 // Middlewares
 app.use(express.json());
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+mongoose.set("useCreateIndex", true);
 
 // Socket.io server
 io.on("connection", socket => {

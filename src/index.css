@@ -11,3 +11,66 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+h1 {
+  font-size: 24px;
+  color: #fff;
+}
+
+button:focus {
+  outline: 0;
+}
+
+.chat {
+  border-left: 0.5px solid #b7b7b7;
+  border-right: 0.5px solid #b7b7b7;
+}
+
+.chat .header {
+  background-color: #d91e36;
+  width: 100%;
+  padding: 10px 0px;
+}
+
+.header .content .profile-image {
+  padding-left: 30px;
+}
+
+.header .content .profile-image img {
+  max-width: 40px;
+  height: 40px;
+  border-radius: 500px;
+}
+
+.chat .input-form {
+  height: 60px;
+  background-color: #e6e1e1;
+}
+
+.chat .input-form .message-input {
+  border: none;
+  border-radius: 500px;
+  font-size: 16px;
+  padding: 10px;
+  padding-left: 50px;
+  width: 100%;
+}
+
+.chat .input-form .message-input::placeholder {
+  color: #393939;
+  font-size: 16px;
+}
+
+.chat .input-form button {
+  border: none;
+  background-color: #fff;
+  margin: 0 10px;
+  border-radius: 500px;
+  cursor: pointer;
+}
+
+.chat .input-form i {
+  padding: 6px;
+  font-size: 24px;
+  color: #d91e36;
+}

@@ -10,6 +10,7 @@ const cors = require("cors");
 const loginRoute = require("./routes/login");
 const registerRoute = require("./routes/register");
 const userRoute = require("./routes/user");
+const apiRoute = require("./routes/api");
 
 // Dotenv
 dotenv.config();
@@ -33,6 +34,7 @@ io.on("connection", socket => {
 app.use("/", userRoute);
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
+app.use("/api", apiRoute);
 
 // app.listen(5000, () => console.log("Server avviato."));
 server.listen(5000, () => console.log("Socket.io server avviato."));

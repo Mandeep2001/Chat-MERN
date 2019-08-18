@@ -1,21 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import User from "./User";
 
-function UserList() {
+function UserList({ usersList }) {
+  const list = usersList.map(user => {
+    return (
+      <Link to="/" className="user-list-link" key={user._id}>
+        <User user={{ name: user.username, isActive: false }} />
+      </Link>
+    );
+  });
+
   return (
-    <div className="user-list h-100 flex-grow-1 d-flex flex-column">
-      <Link className="user-list-link">
-        <User user={{ name: "Mark Zuckerberg", isActive: true }} />
-      </Link>
-      <Link className="user-list-link">
-        <User user={{ name: "Bill Gates", isActive: false }} />
-      </Link>
-      <Link className="user-list-link">
-        <User user={{ name: "Steve Jobs", isActive: false }} />
-      </Link>
-    </div>
+    <div className="user-list h-100 flex-grow-1 d-flex flex-column">{list}</div>
   );
 }
 
-export default UserList;
+const mapStateToProps = state => {
+  return { usersList: state.chat.usersList };
+};
+
+export default connect(mapStateToProps)(UserList);

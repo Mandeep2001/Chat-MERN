@@ -18,6 +18,11 @@ h1 {
   color: #fff;
 }
 
+h2 {
+  font-size: 16px;
+  font-weight: 400;
+}
+
 *:focus {
   outline: 0;
 }
@@ -128,4 +133,47 @@ input[type="text"]::placeholder {
   color: #d91e36;
   font-size: 22px;
   padding: 12px 0;
+}
+
+/* USER LIST */
+.user-list {
+  background-color: #f1f1f1;
+  margin: 20px 0;
+  border-radius: 30px;
+  padding: 30px 0;
+  overflow: hidden;
+}
+
+.user-list-link {
+  color: #393939;
+}
+
+.user-list-link:hover {
+  text-decoration: none;
+  color: #111111;
+}
+
+.user-list-single-user {
+  padding-left: 4px;
+}
+
+.active-user {
+  padding-left: 0;
+  background-color: #fff;
+  border-bottom: 1px solid #d91e36;
+  border-left: 4px solid #d91e36;
+}
+
+.active-user h2 {
+  font-weight: 500;
+}
+
+.user-list-single-user .content {
+  padding: 10px 20px;
+}
+
+.user-list-single-user img {
+  height: 40px;
+  border-radius: 500px;
+  margin-right: 15px;
 }

@@ -36,5 +36,6 @@ app.use("/login", loginRoute);
 app.use("/register", registerRoute);
 app.use("/api", apiRoute);
 
-// app.listen(5000, () => console.log("Server avviato."));
-server.listen(5000, () => console.log("Socket.io server avviato."));
+server.listen(5000, () =>
+  console.log("Socket.io server avviato. In ascolto sulla porta 5000.")
+);

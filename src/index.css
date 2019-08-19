@@ -158,6 +158,10 @@ input[type="text"]::placeholder {
   border-bottom: 1px solid #b7b7b7;
 }
 
+.user-list-single-user:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .active-user {
   padding-left: 0;
   background-color: #fff;
@@ -177,4 +181,16 @@ input[type="text"]::placeholder {
   height: 40px;
   border-radius: 500px;
   margin-right: 15px;
+}
+
+/* MESSAGE */
+.sended-message {
+  max-width: 60%;
+  display: inline-block;
+  background-color: rgba(112, 112, 112, 0.4);
+  padding: 14px 20px;
+  border-radius: 20px;
+}
+
+.sended-message p {
 }

@@ -25,6 +25,10 @@ const schema = new mongoose.Schema(
     name: {
       type: String,
       required: true
+    },
+    profileImageURL: {
+      type: String,
+      default: ""
     }
   },
   { timestamps: true }
@@ -50,6 +54,7 @@ schema.methods.toAuthJSON = function toAuthJSON() {
     _id: this._id,
     email: this.email,
     username: this.username,
+    profileImageURL: this.profileImageURL,
     token: this.generateJWT()
   };
 };

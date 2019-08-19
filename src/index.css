@@ -27,14 +27,17 @@ h2 {
   outline: 0;
 }
 
-input[type="text"] {
+/* INPUT FORM */
+.chat input[type="text"],
+.search-form input[type="text"] {
   border: none;
   border-radius: 500px;
   font-size: 16px;
   padding: 10px;
 }
 
-input[type="text"]::placeholder {
+.chat input[type="text"]::placeholder,
+.search-form input[type="text"]::placeholder {
   color: #393939;
   font-size: 16px;
 }

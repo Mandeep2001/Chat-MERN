@@ -7,8 +7,8 @@ router.get("/users", (req, res) => {
 
   User.find()
     .then(data => {
-      data.forEach(({ _id, username, name }) => {
-        users.push({ _id, username, name });
+      data.forEach(({ _id, username, name, profileImageURL }) => {
+        users.push({ _id, username, name, profileImageURL });
       });
       res.json(users);
     })

@@ -7,7 +7,7 @@ function UserList({ usersList }) {
   const list = usersList.map(user => {
     return (
       <Link to="/" className="user-list-link" key={user._id}>
-        <User user={{ name: user.username, isActive: false }} />
+        <User data={{ user, isActive: false }} />
       </Link>
     );
   });

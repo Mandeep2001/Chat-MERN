@@ -1,10 +1,13 @@
 import { getUsersList } from "../../api";
 
 export const loadUsersAction = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const state = getState();
     getUsersList()
       .then(res => {
-        dispatch({ type: "LOAD_USERS", users: res.data });
+        // Rimuovo l'utente corrente dalla lista
+        const users = res.data.filter(user => user._id !== state.auth.user._id);
+        dispatch({ type: "LOAD_USERS", users });
       })
       .catch(error => {
         console.log(error);

@@ -16,7 +16,6 @@ router.post("/", (req, res) => {
 
   // Cerco un utente
   User.findOne({ email: req.body.email }).then(user => {
-    console.log("Entrato");
     // Se l'utente esiste e la password è valida
     if (user && user.isValidPassword(req.body.password)) {
       res.json({ user: user.toAuthJSON() });

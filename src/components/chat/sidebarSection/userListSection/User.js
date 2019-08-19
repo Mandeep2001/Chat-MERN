@@ -1,18 +1,22 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
 
-function User({ user }) {
+function User({ data }) {
   return (
     <div
-      className={"user-list-single-user " + (user.isActive && "active-user")}
+      className={"user-list-single-user " + (data.isActive && "active-user")}
     >
       <div className="content d-flex flex-row">
         <img
-          src="https://us.123rf.com/450wm/gmast3r/gmast3r1710/gmast3r171002485/88771602-stock-vector-avatar-profile-icon-male-faceless-user-on-colorful-round-background-flat-vector-illustration.jpg?ver=6"
+          src={
+            data.user.profileImageURL === ""
+              ? "http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png"
+              : data.user.profileImageURL
+          }
           alt="Profile image"
           className="my-auto"
         />
-        <h2 className="my-auto">{user.name}</h2>
+        <h2 className="my-auto">{data.user.username}</h2>
       </div>
     </div>
   );

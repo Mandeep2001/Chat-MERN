@@ -44,7 +44,12 @@ schema.methods.setPassword = function setPassword(password) {
 
 schema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
-    { _id: this._id, email: this.email, username: this.username },
+    {
+      _id: this._id,
+      email: this.email,
+      username: this.username,
+      profileImageURL: this.profileImageURL
+    },
     process.env.TOKEN_SECRET
   );
 };

@@ -14,3 +14,11 @@ export const loadUsersAction = () => {
       });
   };
 };
+
+export const changeActiveUserAction = username => (dispatch, getState) => {
+  const state = getState();
+  const selectedUser = state.chat.usersList.filter(
+    user => user.username === username
+  );
+  dispatch({ type: "CHANGE_ACTIVE_USER", selectedUser });
+};

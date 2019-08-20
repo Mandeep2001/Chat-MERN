@@ -1,14 +1,21 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import User from "./User";
+import { changeActiveUserAction } from "../../../../store/actions/chatActions";
 
-function UserList({ usersList }) {
+function UserList({ usersList, changeActiveUser }) {
   const list = usersList.map(user => {
     return (
-      <Link to="/" className="user-list-link" key={user._id}>
+      <div
+        className="user-list-link"
+        key={user._id}
+        onClick={event => {
+          const username = event.target.children[1].innerHTML;
+          changeActiveUser(username);
+        }}
+      >
         <User data={{ user, isActive: false }} />
-      </Link>
+      </div>
     );
   });
 
@@ -21,4 +28,7 @@ const mapStateToProps = state => {
   return { usersList: state.chat.usersList };
 };
 
-export default connect(mapStateToProps)(UserList);
+export default connect(
+  mapStateToProps,
+  { changeActiveUser: changeActiveUserAction }
+)(UserList);

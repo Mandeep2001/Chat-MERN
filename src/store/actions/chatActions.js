@@ -1,4 +1,4 @@
-import { getUsersList } from "../../api";
+import { getUsersList, getMessages } from "../../api";
 
 export const loadUsersAction = () => {
   return (dispatch, getState) => {
@@ -21,4 +21,13 @@ export const changeActiveUserAction = username => (dispatch, getState) => {
     user => user.username === username
   );
   dispatch({ type: "CHANGE_ACTIVE_USER", selectedUser });
+};
+
+export const getMessagesAction = () => {
+  return (dispatch, getState) => {
+    const state = getState();
+    getMessages(state.chat.activeUser[0]._id)
+      .then(res => dispatch({ type: "SET_MESSAGES_LIST", res }))
+      .catch(error => console.log(error));
+  };
 };

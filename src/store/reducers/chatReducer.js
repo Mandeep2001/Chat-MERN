@@ -10,6 +10,9 @@ export default function chatReducer(state = initialState, action) {
 
     case "CHANGE_ACTIVE_USER":
       return { ...state, activeUser: action.selectedUser };
+
+    case "SET_MESSAGES_LIST":
+      return { ...state, messages: action.res.messages };
     default:
       return state;
   }

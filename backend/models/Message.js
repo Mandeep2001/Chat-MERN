@@ -7,11 +7,13 @@ const schema = new mongoose.Schema(
       required: true
     },
     senderUserID: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true
     },
     receiverUserID: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true
     },
     isEliminated: {

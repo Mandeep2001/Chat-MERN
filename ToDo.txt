@@ -1,0 +1,7 @@
+Caricamento messaggi nello store
+  1. Lettura da database
+  2. Aggiungere i messaggi alla lista degli utenti in base da chi sono stati inviati o ricevuti
+    1. Classificare a quale utente appartengono
+      - Controllare se i'ID del sender o del receiver corrisponde ad un utente della lista
+      - Se si, aggiungere alla sua lista il messaggio
+      - Altrimenti passare al prossimo

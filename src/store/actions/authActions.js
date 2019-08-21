@@ -46,7 +46,6 @@ export const registerAction = user => {
             dispatch({ type: "REGISTER_ERROR", error: responce.data.error });
             reject(responce.data.error);
           } else {
-            console.log("Register:", responce.data.user);
             localStorage.chatJWT = responce.data.user.token;
             dispatch({
               type: "REGISTER",

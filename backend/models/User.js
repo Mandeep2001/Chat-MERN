@@ -28,7 +28,9 @@ const schema = new mongoose.Schema(
     profileImageURL: {
       type: String,
       default: ""
-    }
+    },
+    sentMessages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
+    receivedMessages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }]
   },
   { timestamps: true }
 );

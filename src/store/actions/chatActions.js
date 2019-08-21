@@ -26,8 +26,18 @@ export const changeActiveUserAction = username => (dispatch, getState) => {
 export const getMessagesAction = () => {
   return (dispatch, getState) => {
     const state = getState();
-    getMessages(state.chat.activeUser[0]._id)
-      .then(res => dispatch({ type: "SET_MESSAGES_LIST", res }))
+    // const userList = state.chat.usersList;
+    getMessages(state.auth.user._id)
+      .then(res => {
+        // const messageList = res.messages;
+
+        // for (let i = 0; i < messageList.length; i++) {
+        //   const element = messageList[i];
+        //   console.log(element.message);
+        // }
+
+        dispatch({ type: "SET_MESSAGES_LIST", res });
+      })
       .catch(error => console.log(error));
   };
 };

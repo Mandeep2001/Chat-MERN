@@ -4,38 +4,52 @@ const Message = require("../models/Message");
 
 // Gestione link '/api/users'
 router.get("/users", (req, res) => {
-  const users = [];
-
   User.find()
-    .then(data => {
-      data.forEach(({ _id, username, name, profileImageURL }) => {
-        users.push({ _id, username, name, profileImageURL });
-      });
-      res.json(users);
-    })
-    .catch(error => {
-      res.status(400).json(error);
-    });
+    .populate("sentMessages receivedMessages")
+    .exec()
+    .then(data => res.json({ users: data }))
+    .catch(error => res.status(400).json(error));
 });
 
+// Gestione link '/api/messages'
 router.get("/messages", (req, res) => {
   const userID = req.query.userID;
-  Message.find()
+
+  Message.findOne()
     .or([{ senderUserID: userID }, { receiverUserID: userID }])
+    .populate("senderUserID receiverUserID")
     .sort("+createdAt")
     .exec()
-    .then(data => {
-      res.json({ messages: data });
-    });
+    .then(data => res.json({ messages: data }));
 });
 
-router.post("/addMessage", (req, res) => {
+// TODO: Cambiare sul client l'indirizzo da /addmessages a messages
+router.post("/messages", (req, res) => {
+  // 1. Salvare il messaggio
   const message = new Message({
     message: req.body.message,
     senderUserID: req.body.senderUserID,
     receiverUserID: req.body.receiverUserID
   });
-  message.save().then(data => res.json({ message: "Inserito", data }));
+
+  message
+    .save()
+    .then(message => {
+      return User.findById(message.senderUserID);
+    })
+    .then(senderUser => {
+      senderUser.sentMessages.push(message._id);
+      return senderUser.save();
+    })
+    .then(() => {
+      return User.findById(message.receiverUserID);
+    })
+    .then(receiverUser => {
+      receiverUser.receivedMessages.push(message._id);
+      return receiverUser.save();
+    })
+    .then(res.json({ message: "Inserito" }))
+    .catch(error => res.json({ error }));
 });
 
 module.exports = router;

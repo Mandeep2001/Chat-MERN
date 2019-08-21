@@ -1,6 +1,7 @@
 const initialState = {
   usersList: [],
-  activeUser: null
+  activeUser: null,
+  messages: null
 };
 
 export default function chatReducer(state = initialState, action) {
@@ -9,7 +10,7 @@ export default function chatReducer(state = initialState, action) {
       return { ...state, usersList: action.users };
 
     case "CHANGE_ACTIVE_USER":
-      return { ...state, activeUser: action.selectedUser };
+      return { ...state, messages: null, activeUser: action.selectedUser };
 
     case "SET_MESSAGES_LIST":
       return { ...state, messages: action.res.messages };

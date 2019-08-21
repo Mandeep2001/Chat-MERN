@@ -7,10 +7,11 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 
 // Routes
-const loginRoute = require("./routes/login");
-const registerRoute = require("./routes/register");
-const userRoute = require("./routes/user");
-const apiRoute = require("./routes/api");
+const loginRoute = require("./api/routes/user/login");
+const registerRoute = require("./api/routes/user/register");
+const userProfileRoute = require("./api/routes/user/userProfile");
+const usersRoute = require("./api/routes/user/users");
+const messagesRoute = require("./api/routes/messages");
 
 // Dotenv
 dotenv.config();
@@ -31,10 +32,11 @@ io.on("connection", socket => {
 });
 
 // Route Midllewares
-app.use("/", userRoute);
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
-app.use("/api", apiRoute);
+app.use("/users", usersRoute);
+app.use("/messages", messagesRoute);
+app.use("/", userProfileRoute);
 
 server.listen(5000, () =>
   console.log("Socket.io server avviato. In ascolto sulla porta 5000.")

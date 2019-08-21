@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const User = require("../models/User");
+const User = require("../../models/User");
 // const bcrypt = require("bcrypt");
-const { registerValidation } = require("../validation/authvalidation");
+const { registerValidation } = require("../../../validation/authvalidation");
 
 // Gestione link '/register'
 router.post("/", async (req, res) => {

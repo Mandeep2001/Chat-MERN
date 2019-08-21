@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const User = require("../models/User");
+const User = require("../../models/User");
 
-// Gestione link '/'
+// GET /
 router.get("/:username", (req, res) => {
   const username = req.params.username;
 

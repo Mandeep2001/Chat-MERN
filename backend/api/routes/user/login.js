@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const User = require("../models/User");
+const User = require("../../models/User");
 // const jwt = require("jsonwebtoken");
-const { loginValidation } = require("../validation/authvalidation");
+const { loginValidation } = require("../../../validation/authvalidation");
 
 // Gestione link '/login'
 router.post("/", (req, res) => {

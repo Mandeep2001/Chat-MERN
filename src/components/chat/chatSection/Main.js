@@ -3,22 +3,20 @@ import { connect } from "react-redux";
 import SendedMessage from "./SendedMessage";
 import ReceivedMessage from "./ReceivedMessage";
 
-function Main({ userID, messages }) {
+function Main({ activeUser }) {
   const [messageList, setMessages] = useState();
 
   useEffect(() => {
-    if (messages) {
-      setMessages(
-        messages.map(msg => {
-          return msg.senderUserID !== userID ? (
-            <SendedMessage message={msg.message} key={msg._id} />
-          ) : (
-            <ReceivedMessage message={msg.message} key={msg._id} />
-          );
-        })
-      );
-    }
-  }, [messages, userID]);
+    setMessages(
+      activeUser.messages.map(msg => {
+        return msg.senderUserID !== activeUser.user._id ? (
+          <SendedMessage message={msg.message} key={msg._id} />
+        ) : (
+          <ReceivedMessage message={msg.message} key={msg._id} />
+        );
+      })
+    );
+  }, [activeUser]);
 
   return (
     <div className="d-flex flex-column flex-grow-1 h-100">{messageList}</div>
@@ -27,8 +25,7 @@ function Main({ userID, messages }) {
 
 const mapStateToProps = state => {
   return {
-    userID: state.chat.activeUser[0]._id,
-    messages: state.chat.messages
+    activeUser: state.chat.activeUser[0]
   };
 };
 

@@ -26,7 +26,8 @@ function Header({ user }) {
 // FIXME: Migliorare questa sezione, invece di far apparire il proprio profilo fare una specie di home che compare quando nessun
 // utente è selezionato
 const mapStateToProps = state => {
-  if (state.chat.activeUser !== null) return { user: state.chat.activeUser[0] };
+  if (state.chat.activeUser !== null)
+    return { user: state.chat.activeUser[0].user };
   else return { user: state.auth.user };
 };
 

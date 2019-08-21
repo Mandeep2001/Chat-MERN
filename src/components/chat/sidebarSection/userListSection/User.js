@@ -1,10 +1,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
 import { connect } from "react-redux";
-import {
-  changeActiveUserAction,
-  getMessagesAction
-} from "../../../../store/actions/chatActions";
+import { changeActiveUserAction } from "../../../../store/actions/chatActions";
 
 function User({ data, changeActiveUser, getMessages }) {
   return (
@@ -13,7 +10,6 @@ function User({ data, changeActiveUser, getMessages }) {
       onClick={event => {
         const username = event.target.children[1].getAttribute("username"); // FIXME: la pagina si ricarica e da errore
         changeActiveUser(username);
-        getMessages();
       }}
     >
       <div className="content d-flex flex-row">
@@ -40,5 +36,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { changeActiveUser: changeActiveUserAction, getMessages: getMessagesAction }
+  { changeActiveUser: changeActiveUserAction }
 )(User);

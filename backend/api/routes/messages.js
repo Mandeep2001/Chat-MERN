@@ -14,7 +14,6 @@ router.get("/messages", (req, res) => {
     .then(data => res.json({ messages: data }));
 });
 
-// TODO: Cambiare sul client l'indirizzo da /addmessages a messages
 // POST /messages
 router.post("/", (req, res) => {
   // Creo il messaggio

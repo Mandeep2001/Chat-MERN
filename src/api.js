@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export const getUsersList = () => {
+export const getUsersList = _id => {
   return new Promise((resolve, reject) => {
     axios
-      .get("http://localhost:5000/api/users")
-      .then(data => {
-        resolve(data);
+      .post("http://localhost:5000/users", { userID: _id })
+      .then(res => {
+        resolve(res);
       })
       .catch(error => {
         reject(error);

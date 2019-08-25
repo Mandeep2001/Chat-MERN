@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { sendMessageAction } from "../../../store/actions/chatActions";
 
-export default class InputForm extends Component {
+class InputForm extends Component {
   constructor(props) {
     super(props);
 
@@ -15,6 +17,7 @@ export default class InputForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    this.props.sendMessage(this.state.message);
   };
 
   render() {
@@ -43,3 +46,12 @@ export default class InputForm extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return { socket: state.chat.socket };
+};
+
+export default connect(
+  mapStateToProps,
+  { sendMessage: sendMessageAction }
+)(InputForm);

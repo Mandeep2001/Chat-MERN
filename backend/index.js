@@ -5,6 +5,7 @@ const io = require("socket.io")(server);
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const saveMessage = require("./utils/messages");
 
 // Routes
 const loginRoute = require("./api/routes/user/login");
@@ -27,8 +28,19 @@ app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 mongoose.set("useCreateIndex", true);
 
 // Socket.io server
-io.on("connection", socket => {
-  console.log("Connesso.");
+const nsp = io.of("/");
+
+nsp.on("connection", socket => {
+  console.log("Connesso:", socket.id);
+
+  socket.on("send_message", data => {
+    console.log("Data received:", data);
+    saveMessage(data)
+      .then(res => console.log("Inserito messaggio:", res._id))
+      .catch(error => console.log(error));
+  });
+
+  socket.on("disconnect", () => console.log("Disconnesso"));
 });
 
 // Route Midllewares

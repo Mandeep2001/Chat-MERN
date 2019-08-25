@@ -1,6 +1,7 @@
 const initialState = {
   usersList: [],
-  activeUser: null
+  activeUser: null,
+  socket: null
 };
 
 export default function chatReducer(state = initialState, action) {
@@ -11,8 +12,20 @@ export default function chatReducer(state = initialState, action) {
     case "CHANGE_ACTIVE_USER":
       return { ...state, activeUser: action.selectedUser };
 
-    case "SET_MESSAGES_LIST":
-      return { ...state, messages: action.res.messages };
+    case "SEND_MESSAGE":
+      const usersList = state.usersList.map(u => {
+        if (u.user._id === state.activeUser[0].user._id)
+          u.messages = [...state.activeUser[0].messages, action.msg];
+        return u;
+      });
+      return {
+        ...state,
+        usersList
+      };
+
+    case "SET_SOCKET":
+      return { ...state, socket: action.socket };
+
     default:
       return state;
   }

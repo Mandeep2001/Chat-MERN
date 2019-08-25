@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import User from "./User";
 
-function UserList({ usersList, changeActiveUser }) {
+function UserList({ usersList }) {
   const list = usersList.map(({ user }) => {
     return (
       <div className="user-list-link" key={user._id}>

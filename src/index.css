@@ -92,6 +92,10 @@ button:focus {
   color: #d91e36;
 }
 
+.chat-main {
+  overflow-y: scroll;
+}
+
 /* SIDEBAR */
 .chat-sidebar {
   width: 35%;
@@ -192,10 +196,21 @@ button:focus {
 }
 
 /* MESSAGE */
-.sended-message {
+.sended-message,
+.received-message {
   max-width: 60%;
   display: inline-block;
   background-color: rgba(112, 112, 112, 0.4);
   padding: 14px 20px;
   border-radius: 20px;
+}
+
+.received-message {
+  border-top-left-radius: 0;
+  background: rgba(217, 30, 54, 0.6);
+}
+
+.sended-message {
+  border-top-right-radius: 0;
+  background: rgba(217, 30, 54, 0.5);
 }

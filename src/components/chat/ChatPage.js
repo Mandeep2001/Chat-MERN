@@ -4,7 +4,8 @@ import Chat from "./chatSection/Chat";
 import ChatSidebar from "./sidebarSection/ChatSidebar";
 import {
   loadUsersAction,
-  setSocketAction
+  setSocketAction,
+  receiveMessageAction
 } from "../../store/actions/chatActions";
 import openSocket from "socket.io-client";
 
@@ -17,6 +18,16 @@ class ChatPage extends Component {
   }
 
   render() {
+    socket.on("connect", () => {
+      socket.emit("new_user", {
+        username: this.props.user.username,
+        _id: this.props.user._id
+      });
+    });
+
+    socket.on("message", data => {
+      this.props.receiveMessage(data);
+    });
     return (
       <div className="container d-flex justify-content-between h-100 chat-page">
         <Chat />
@@ -26,7 +37,17 @@ class ChatPage extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    user: state.auth.user
+  };
+};
+
 export default connect(
-  null,
-  { loadUsers: loadUsersAction, setSocket: setSocketAction }
+  mapStateToProps,
+  {
+    loadUsers: loadUsersAction,
+    setSocket: setSocketAction,
+    receiveMessage: receiveMessageAction
+  }
 )(ChatPage);

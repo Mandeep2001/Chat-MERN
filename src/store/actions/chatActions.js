@@ -40,6 +40,10 @@ export const sendMessageAction = message => (dispatch, getState) => {
   dispatch({ type: "SEND_MESSAGE", msg });
 };
 
+export const receiveMessageAction = message => dispatch => {
+  dispatch({ type: "RECEIVE_MESSAGE", message });
+};
+
 export const setSocketAction = socket => dispatch => {
   dispatch({ type: "SET_SOCKET", socket });
 };

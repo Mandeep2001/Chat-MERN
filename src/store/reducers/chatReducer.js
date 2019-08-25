@@ -23,6 +23,24 @@ export default function chatReducer(state = initialState, action) {
         usersList
       };
 
+    case "RECEIVE_MESSAGE":
+      const users = state.usersList.map(u => {
+        if (u.user._id === action.message.senderUserID) {
+          u.messages = [
+            ...u.messages,
+            {
+              _id: action.message._id,
+              message: action.message.message,
+              senderUserID: action.message.senderUserID,
+              receiverUserID: action.message.receiverUserID,
+              createdAt: action.message.createdAt
+            }
+          ];
+        }
+        return u;
+      });
+      return { ...state, usersList: [...users] };
+
     case "SET_SOCKET":
       return { ...state, socket: action.socket };
 

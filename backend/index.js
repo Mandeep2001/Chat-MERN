@@ -5,7 +5,7 @@ const io = require("socket.io")(server);
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const saveMessage = require("./utils/messages");
+const { saveMessage, getSocketById } = require("./utils/messages");
 
 // Routes
 const loginRoute = require("./api/routes/user/login");
@@ -30,17 +30,32 @@ mongoose.set("useCreateIndex", true);
 // Socket.io server
 const nsp = io.of("/");
 
+// When a client connets to the server
 nsp.on("connection", socket => {
-  console.log("Connesso:", socket.id);
+  // When a client fires the 'new_user' event
+  socket.on("new_user", data => (socket.user = data));
 
+  // When a client want to send a message
   socket.on("send_message", data => {
-    console.log("Data received:", data);
-    saveMessage(data)
-      .then(res => console.log("Inserito messaggio:", res._id))
-      .catch(error => console.log(error));
+    // Get the socket that must receive the message
+    const receiverSocket = getSocketById(data.receiverUserID, io);
+    if (!receiverSocket) {
+      console.log(
+        "Il socket cercato non è stato trovato dalla funzione getSocketById, forse non è online al momento"
+      );
+      return;
+    }
+    // Save message in database
+    saveMessage(data).then(res => {
+      console.log(res);
+      // Send message to the receiver
+      receiverSocket.emit("message", res);
+    });
   });
 
-  socket.on("disconnect", () => console.log("Disconnesso"));
+  socket.on("disconnect", () =>
+    console.log("Disconnesso:", socket.user.username)
+  );
 });
 
 // Route Midllewares

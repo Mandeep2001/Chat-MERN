@@ -68,6 +68,7 @@ const saveMessage = data => {
 const getSocketById = (id, io) => {
   const socketList = io.sockets.sockets;
   for (const socketId in socketList) {
+    console.log(socketList[socketId].user); // FIXME: A volte crasha dicendo che non si può accedere al campo _id dato che user è undefined
     if (socketList[socketId].user._id === id) return socketList[socketId];
   }
   return null;

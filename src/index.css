@@ -199,18 +199,37 @@ button:focus {
 .sent-message,
 .received-message {
   max-width: 60%;
-  display: inline-block;
-  background-color: rgba(112, 112, 112, 0.4);
-  padding: 14px 20px;
-  border-radius: 20px;
 }
 
-.received-message {
+.message-p {
+  font-size: 16px;
+  padding: 14px 20px;
+  border-radius: 20px;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.time-p {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.received-message .message-p {
   border-top-left-radius: 0;
   background: rgba(217, 30, 54, 0.6);
 }
 
-.sent-message {
+.received-message .time-p {
+  margin-left: 1em;
+}
+
+.sent-message .message-p {
   border-top-right-radius: 0;
   background: rgba(217, 30, 54, 0.5);
+}
+
+.sent-message .time-p {
+  margin-right: 1em;
 }

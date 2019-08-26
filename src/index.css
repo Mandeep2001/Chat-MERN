@@ -196,7 +196,7 @@ button:focus {
 }
 
 /* MESSAGE */
-.sended-message,
+.sent-message,
 .received-message {
   max-width: 60%;
   display: inline-block;
@@ -210,7 +210,7 @@ button:focus {
   background: rgba(217, 30, 54, 0.6);
 }
 
-.sended-message {
+.sent-message {
   border-top-right-radius: 0;
   background: rgba(217, 30, 54, 0.5);
 }

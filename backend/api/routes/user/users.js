@@ -31,10 +31,6 @@ router.post("/", (req, res) => {
 
         const messages = [...sent, ...received];
 
-        messages.sort(function(a, b) {
-          return a.plantingDate > b.plantingDate;
-        });
-
         users.push({
           user: {
             _id: user._id,

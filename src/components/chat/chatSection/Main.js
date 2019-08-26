@@ -1,16 +1,41 @@
 import React from "react";
 import { connect } from "react-redux";
-import SendedMessage from "./SendedMessage";
-import ReceivedMessage from "./ReceivedMessage";
+import Message from "./Message";
 
 function Main({ user, messages }) {
+  messages.sort(function(a, b) {
+    return a.createdAt > b.createdAt;
+  });
+
   const messageList = messages.map(msg => {
     return msg.senderUserID !== user._id ? (
-      <SendedMessage message={msg.message} key={msg._id} />
+      <Message
+        message={msg.message}
+        time={msg.createdAt}
+        isSent={true}
+        key={msg._id}
+      />
     ) : (
-      <ReceivedMessage message={msg.message} key={msg._id} />
+      <Message
+        message={msg.message}
+        time={msg.createdAt}
+        isSent={false}
+        key={msg._id}
+      />
     );
   });
+
+  // const messageList = messages.map(msg => {
+  //   return msg.senderUserID !== user._id ? (
+  //     <SendedMessage message={msg.message} time={msg.createdAt} key={msg._id} />
+  //   ) : (
+  //     <ReceivedMessage
+  //       message={msg.message}
+  //       time={msg.createdAt}
+  //       key={msg._id}
+  //     />
+  //   );
+  // });
 
   return (
     <div className="chat-main d-flex flex-column flex-grow-1 h-100">

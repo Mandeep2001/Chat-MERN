@@ -17,7 +17,9 @@ class InputForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.sendMessage(this.state.message);
+    if (!(this.state.message.trim() === "")) {
+      this.props.sendMessage(this.state.message);
+    }
   };
 
   render() {

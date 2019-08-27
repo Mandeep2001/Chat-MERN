@@ -11,7 +11,7 @@ function Chat({ activeUser }) {
   else main = <div className="d-flex flex-column flex-grow-1 h-100" />;
 
   return (
-    <div className="chat w-100 mr-2 d-flex flex-column">
+    <div className="chat mh-100 w-100 mr-2 d-flex flex-column">
       <Header />
       {main}
       <InputForm />

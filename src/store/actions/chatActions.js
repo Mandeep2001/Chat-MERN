@@ -47,3 +47,7 @@ export const receiveMessageAction = message => dispatch => {
 export const setSocketAction = socket => dispatch => {
   dispatch({ type: "SET_SOCKET", socket });
 };
+
+export const searchUserAction = users => dispatch => {
+  dispatch({ type: "SEARCH_USER", users });
+};

@@ -47,13 +47,12 @@ nsp.on("connection", socket => {
     }
     // Save message in database
     saveMessage(data).then(res => {
-      console.log("Messaggio inserito:", res);
       // Send message to the receiver
       receiverSocket.emit("message", res);
     });
   });
 
-  socket.on("disconnect", () => console.log("Disconnesso:", socket.user));
+  // socket.on("disconnect", () => console.log("Disconnesso:", socket.user));
 });
 
 // Route Midllewares

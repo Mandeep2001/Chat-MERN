@@ -7,10 +7,10 @@ function User({ data, changeActiveUser }) {
   const [username, setUsername] = useState();
 
   useEffect(() => {
-    setUsername(data.user.username);
+    data.user && setUsername(data.user.username);
   }, [data]);
 
-  return (
+  return data.user ? (
     <div
       className={"user-list-single-user " + (data.isActive && "active-user")}
       onClick={event => {
@@ -32,6 +32,8 @@ function User({ data, changeActiveUser }) {
         </h2>
       </div>
     </div>
+  ) : (
+    <div>Nessun utente trovato</div>
   );
 }
 

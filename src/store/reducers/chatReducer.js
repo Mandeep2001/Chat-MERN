@@ -1,7 +1,8 @@
 const initialState = {
   usersList: [],
   activeUser: null,
-  socket: null
+  socket: null,
+  searchedUsers: null
 };
 
 export default function chatReducer(state = initialState, action) {
@@ -43,6 +44,9 @@ export default function chatReducer(state = initialState, action) {
 
     case "SET_SOCKET":
       return { ...state, socket: action.socket };
+
+    case "SEARCH_USER":
+      return { ...state, searchedUsers: action.users };
 
     default:
       return state;

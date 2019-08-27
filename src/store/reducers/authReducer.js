@@ -19,7 +19,7 @@ export default function authReducer(state = initialState, action) {
     case "REGISTER_ERROR":
       return { ...state, registerError: action.error, user: { token: null } };
     case "LOGOUT":
-      return {};
+      return { ...initialState };
 
     default:
       return state;

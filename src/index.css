@@ -233,3 +233,10 @@ button:focus {
 .sent-message .time-p {
   margin-right: 1em;
 }
+
+/* OPTION BAR */
+#logout-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}

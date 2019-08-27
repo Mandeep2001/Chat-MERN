@@ -1,14 +1,19 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { changeActiveUserAction } from "../../../../store/actions/chatActions";
 
-function User({ data, changeActiveUser, getMessages }) {
+function User({ data, changeActiveUser }) {
+  const [username, setUsername] = useState();
+
+  useEffect(() => {
+    setUsername(data.user.username);
+  }, [data]);
+
   return (
     <div
       className={"user-list-single-user " + (data.isActive && "active-user")}
       onClick={event => {
-        const username = event.target.children[1].getAttribute("username"); // FIXME: la pagina si ricarica e da errore
         changeActiveUser(username);
       }}
     >

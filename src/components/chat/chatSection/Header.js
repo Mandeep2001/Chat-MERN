@@ -27,7 +27,7 @@ function Header({ user }) {
 // utente è selezionato
 const mapStateToProps = state => {
   if (state.chat.activeUser !== null)
-    return { user: state.chat.activeUser[0].user };
+    return { user: state.chat.activeUser.user };
   else return { user: state.auth.user };
 };
 

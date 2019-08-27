@@ -34,8 +34,8 @@ function Main({ user, messages }) {
 
 const mapStateToProps = state => {
   return {
-    user: state.chat.activeUser[0].user,
-    messages: state.chat.activeUser[0].messages
+    user: state.chat.activeUser.user,
+    messages: state.chat.activeUser.messages
   };
 };
 

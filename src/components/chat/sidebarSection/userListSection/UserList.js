@@ -2,11 +2,17 @@ import React from "react";
 import { connect } from "react-redux";
 import User from "./User";
 
-function UserList({ usersList, searchedUsers }) {
+function UserList({ usersList, searchedUsers, activeUser }) {
+  let isActive = false;
   const list = usersList.map(({ user }) => {
+    if (activeUser && user._id === activeUser.user._id) {
+      isActive = true;
+    } else {
+      isActive = false;
+    }
     return (
       <div className="user-list-link" key={user._id}>
-        <User data={{ user, isActive: false }} />
+        <User data={{ user, isActive }} />
       </div>
     );
   });
@@ -31,7 +37,8 @@ function UserList({ usersList, searchedUsers }) {
 const mapStateToProps = state => {
   return {
     usersList: state.chat.usersList,
-    searchedUsers: state.chat.searchedUsers
+    searchedUsers: state.chat.searchedUsers,
+    activeUser: state.chat.activeUser
   };
 };
 

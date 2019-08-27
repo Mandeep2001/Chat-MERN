@@ -11,7 +11,7 @@ export default function chatReducer(state = initialState, action) {
       return { ...state, usersList: action.users };
 
     case "CHANGE_ACTIVE_USER":
-      return { ...state, activeUser: action.selectedUser };
+      return { ...state, activeUser: action.selectedUser[0] };
 
     case "SEND_MESSAGE":
       const usersList = state.usersList.map(u => {

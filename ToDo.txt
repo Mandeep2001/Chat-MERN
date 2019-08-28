@@ -5,3 +5,7 @@ Caricamento messaggi nello store
       - Controllare se i'ID del sender o del receiver corrisponde ad un utente della lista
       - Se si, aggiungere alla sua lista il messaggio
       - Altrimenti passare al prossimo
+
+Profile details page
+  1. Visualizzare la pagina con tutte le informazioni
+  2. Permettere l'aggiornamento della password e di tutti gli altri campi

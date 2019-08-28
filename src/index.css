@@ -167,7 +167,6 @@ button:focus {
 
 .user-list-single-user {
   padding-left: 4px;
-  border-bottom: 1px solid #b7b7b7;
 }
 
 .user-list-single-user:hover {
@@ -176,8 +175,7 @@ button:focus {
 
 .active-user {
   padding-left: 0;
-  background-color: #fff;
-  border-bottom: 1px solid #d91e36;
+  background-color: #fefefe;
   border-left: 4px solid #d91e36;
 }
 
@@ -261,11 +259,12 @@ button:focus {
 
 .profile-details img {
   position: absolute;
-  top: 10%;
+  top: 15%;
   left: auto;
   right: auto;
   transform: translate(-50%);
-  max-width: 160px;
+  max-height: 20%;
+  cursor: pointer;
 }
 
 .profile-stats,
@@ -291,4 +290,21 @@ button:focus {
 .profile-details .custom-card i {
   color: #d91e36;
   cursor: pointer;
+}
+
+.update-button {
+  border: none;
+  background-color: #d91e36;
+  padding: 8px 50px;
+  border-radius: 500px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  -webkit-box-shadow: 4px 4px 20px 0px rgba(217, 30, 54, 0.2);
+  -moz-box-shadow: 4px 4px 20px 0px rgba(217, 30, 54, 0.2);
+  box-shadow: 4px 4px 20px 0px rgba(217, 30, 54, 0.2);
+}
+
+.update-button:hover {
+  background-color: #bf2539;
 }

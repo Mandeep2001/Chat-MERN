@@ -49,7 +49,8 @@ schema.methods.generateJWT = function generateJWT() {
       _id: this._id,
       email: this.email,
       username: this.username,
-      profileImageURL: this.profileImageURL
+      profileImageURL: this.profileImageURL,
+      name: this.name
     },
     process.env.TOKEN_SECRET
   );
@@ -59,6 +60,7 @@ schema.methods.toAuthJSON = function toAuthJSON() {
   return {
     _id: this._id,
     email: this.email,
+    name: this.name,
     username: this.username,
     profileImageURL: this.profileImageURL,
     token: this.generateJWT()

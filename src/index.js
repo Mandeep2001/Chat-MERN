@@ -19,13 +19,16 @@ const store = createStore(
 );
 
 if (localStorage.chatJWT) {
-  const { _id, email, username, profileImageURL } = jwt(localStorage.chatJWT);
+  const { _id, email, username, profileImageURL, name } = jwt(
+    localStorage.chatJWT
+  );
   const user = {
     token: localStorage.chatJWT,
     _id,
     username,
     email,
-    profileImageURL
+    profileImageURL,
+    name
   };
   store.dispatch({ type: "LOGIN", user });
 }

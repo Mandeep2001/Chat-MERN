@@ -8,7 +8,9 @@ router.post("/", (req, res) => {
     received = [];
 
   User.find()
-    .select("_id username profileImageURL sentMessages receivedMessages")
+    .select(
+      "_id username profileImageURL sentMessages receivedMessages name email"
+    )
     .populate([
       {
         path: "sentMessages",

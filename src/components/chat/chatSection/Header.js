@@ -11,7 +11,7 @@ function Header({ user }) {
             src={
               user.profileImageURL === ""
                 ? "http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png"
-                : user.profileImageURL
+                : "http://localhost:5000/" + user.profileImageURL
             }
             alt="Profile image"
             className="mr-3"

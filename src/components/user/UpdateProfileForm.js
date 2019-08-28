@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-function UpdateProfileForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+function UpdateProfileForm({ uploadImage, handleChange }) {
+  // const [username, setUsername] = useState("");
+  // const [password, setPassword] = useState("");
 
   return (
     <form>
@@ -13,8 +13,8 @@ function UpdateProfileForm() {
           className="form-control"
           id="username"
           name="username"
-          value={username}
-          onChange={event => setUsername(event.target.value)}
+          // value={username}
+          onChange={event => handleChange(event)}
           aria-describedby="emailHelp"
           placeholder="Enter email"
         />
@@ -26,8 +26,8 @@ function UpdateProfileForm() {
           className="form-control"
           id="password"
           name="password"
-          value={password}
-          onChange={event => setPassword(event.target.value)}
+          // value={password}
+          onChange={event => handleChange(event)}
           placeholder="Password"
         />
       </div>
@@ -36,9 +36,10 @@ function UpdateProfileForm() {
           type="file"
           className="custom-file-input"
           id="imageUpload"
+          onChange={event => uploadImage(event.target.files[0])}
           accept="image/x-png,image/jpeg"
         />
-        <label className="custom-file-label" for="customFile">
+        <label className="custom-file-label" htmlFor="customFile">
           Choose file
         </label>
       </div>

@@ -24,6 +24,7 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true }, () => {
 
 // Middlewares
 app.use(express.json());
+app.use("/profile_images", express.static("./profile_images"));
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 mongoose.set("useCreateIndex", true);
 

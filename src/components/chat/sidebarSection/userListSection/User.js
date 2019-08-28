@@ -22,7 +22,7 @@ function User({ data, changeActiveUser }) {
           src={
             data.user.profileImageURL === ""
               ? "http://pronksiapartments.ee/wp-content/uploads/2015/10/placeholder-face-big.png"
-              : data.user.profileImageURL
+              : "http://localhost:5000/" + data.user.profileImageURL
           }
           alt="Profile image"
           className="my-auto"

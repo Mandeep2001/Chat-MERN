@@ -52,6 +52,10 @@ button:focus {
   border-right: 0.5px solid #b7b7b7;
 }
 
+.chat-page img {
+  object-fit: cover;
+}
+
 .chat .header {
   background-color: #d91e36;
   width: 100%;
@@ -264,7 +268,6 @@ button:focus {
   right: auto;
   transform: translate(-50%);
   max-height: 20%;
-  cursor: pointer;
 }
 
 .profile-stats,

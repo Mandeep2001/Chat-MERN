@@ -3,7 +3,7 @@ const User = require("../models/User");
 const Message = require("../models/Message");
 
 // GET /messages
-router.get("/messages", (req, res) => {
+router.get("/", (req, res) => {
   const userID = req.query.userID;
 
   Message.findOne()

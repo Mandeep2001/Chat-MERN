@@ -74,4 +74,8 @@ const getSocketById = (id, io) => {
   return null;
 };
 
-module.exports = { saveMessage, getSocketById };
+const setEliminateMessage = message => {
+  return Message.updateOne({ _id: message._id }, { isEliminated: true });
+};
+
+module.exports = { saveMessage, getSocketById, setEliminateMessage };

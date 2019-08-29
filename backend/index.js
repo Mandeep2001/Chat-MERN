@@ -5,7 +5,11 @@ const io = require("socket.io")(server);
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const { saveMessage, getSocketById } = require("./utils/messages");
+const {
+  saveMessage,
+  getSocketById,
+  setEliminateMessage
+} = require("./utils/messages");
 
 // Routes
 const loginRoute = require("./api/routes/user/login");
@@ -50,8 +54,30 @@ nsp.on("connection", socket => {
     saveMessage(data).then(res => {
       // Send message to the receiver
       receiverSocket.emit("message", res);
+      socket.emit("sentMessageID", {
+        res,
+        temporaryId: data._id,
+        receiverUserID: res.receiverUserID
+      });
     });
   });
+
+  socket.on("delete_message", data =>
+    setEliminateMessage(data)
+      .then(() => {
+        const receiverSocket = getSocketById(data.receiverUserID, io);
+        if (!receiverSocket) {
+          console.log(
+            "Il socket cercato non è stato trovato dalla funzione getSocketById, forse non è online al momento"
+          );
+          return;
+        }
+        receiverSocket.emit("delete_message", data);
+      })
+      .catch(error =>
+        console.log("Errore durante l'eliminazione del messaggio:", error)
+      )
+  );
 
   // socket.on("disconnect", () => console.log("Disconnesso:", socket.user));
 });

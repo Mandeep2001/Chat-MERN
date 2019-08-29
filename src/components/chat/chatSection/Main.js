@@ -8,19 +8,13 @@ function Main({ user, messages }) {
   });
 
   const messageList = messages.map(msg => {
-    return msg.senderUserID !== user._id ? (
+    return (
       <Message
-        message={msg.message}
+        message={msg}
         time={msg.createdAt}
-        isSent={true}
+        isSent={msg.senderUserID !== user._id}
         key={msg._id}
-      />
-    ) : (
-      <Message
-        message={msg.message}
-        time={msg.createdAt}
-        isSent={false}
-        key={msg._id}
+        _id={msg._id}
       />
     );
   });

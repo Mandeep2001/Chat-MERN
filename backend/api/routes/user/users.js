@@ -14,21 +14,25 @@ router.post("/", (req, res) => {
     .populate([
       {
         path: "sentMessages",
-        select: "_id senderUserID receiverUserID createdAt message"
+        select: "_id senderUserID receiverUserID createdAt message",
+        match: { isEliminated: false }
       },
       {
         path: "receivedMessages",
-        select: "_id senderUserID receiverUserID createdAt message"
+        select: "_id senderUserID receiverUserID createdAt message",
+        match: { isEliminated: false }
       }
     ])
     .then(data => {
       data.forEach(user => {
-        sent = user.sentMessages.filter(message =>
-          message.receiverUserID.equals(userID)
+        sent = user.sentMessages.filter(
+          message =>
+            message.receiverUserID.equals(userID) && !message.isEliminated
         );
 
-        received = user.receivedMessages.filter(message =>
-          message.senderUserID.equals(userID)
+        received = user.receivedMessages.filter(
+          message =>
+            message.senderUserID.equals(userID) && !message.isEliminated
         );
 
         const messages = [...sent, ...received];

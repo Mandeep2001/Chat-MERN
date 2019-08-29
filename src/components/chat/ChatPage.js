@@ -5,7 +5,9 @@ import ChatSidebar from "./sidebarSection/ChatSidebar";
 import {
   loadUsersAction,
   setSocketAction,
-  receiveMessageAction
+  receiveMessageAction,
+  changeMessageIdAction,
+  deleteMessageAction
 } from "../../store/actions/chatActions";
 import openSocket from "socket.io-client";
 
@@ -28,6 +30,17 @@ class ChatPage extends Component {
     socket.on("message", data => {
       this.props.receiveMessage(data);
     });
+
+    socket.on("sentMessageID", data => {
+      this.props.changeMessageId(data);
+    });
+
+    socket.on("delete_message", data => {
+      data.eminated = true;
+      console.log(data);
+      this.props.deleteMessage(data);
+    });
+
     return (
       <div className="container d-flex justify-content-between h-100 chat-page">
         <Chat />
@@ -48,6 +61,8 @@ export default connect(
   {
     loadUsers: loadUsersAction,
     setSocket: setSocketAction,
-    receiveMessage: receiveMessageAction
+    receiveMessage: receiveMessageAction,
+    changeMessageId: changeMessageIdAction,
+    deleteMessage: deleteMessageAction
   }
 )(ChatPage);

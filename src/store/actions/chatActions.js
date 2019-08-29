@@ -29,15 +29,25 @@ export const changeActiveUserAction = username => (dispatch, getState) => {
 
 export const sendMessageAction = message => (dispatch, getState) => {
   const state = getState();
+  const _id = uuid();
   const msg = {
-    _id: uuid(),
+    _id,
     message,
     senderUserID: state.auth.user._id,
-    receiverUserID: state.chat.activeUser[0].user._id,
+    receiverUserID: state.chat.activeUser.user._id,
     createdAt: Date.now()
   };
   state.chat.socket.emit("send_message", msg);
   dispatch({ type: "SEND_MESSAGE", msg });
+};
+
+export const changeMessageIdAction = message => dispatch => {
+  dispatch({
+    type: "CHANGE_MESSAGE_ID",
+    temporaryId: message.temporaryId,
+    _id: message.res._id,
+    receiverUserID: message.receiverUserID
+  });
 };
 
 export const receiveMessageAction = message => dispatch => {
@@ -50,4 +60,16 @@ export const setSocketAction = socket => dispatch => {
 
 export const searchUserAction = users => dispatch => {
   dispatch({ type: "SEARCH_USER", users });
+};
+
+export const deleteMessageAction = message => (dispatch, getState) => {
+  const state = getState();
+  state.chat.socket.emit("delete_message", message);
+
+  const list = state.chat.usersList.map(u => {
+    u.messages = u.messages.filter(m => m._id !== message._id);
+    return u;
+  });
+
+  dispatch({ type: "DELETE_MESSAGE", list });
 };

@@ -1,6 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
+import { deleteMessageAction } from "../../../store/actions/chatActions";
 
-function ReveivedMessage({ message, time, isSent }) {
+function ReveivedMessage({ message, time, isSent, deleteMessage, user }) {
   time = new Date(time);
   const hour =
     ("0" + time.getHours()).slice(-2) +
@@ -8,7 +10,12 @@ function ReveivedMessage({ message, time, isSent }) {
     ("0" + time.getMinutes()).slice(-2);
 
   return (
-    <div className="message d-flex w-100">
+    <div
+      className="message d-flex w-100"
+      onClick={() => {
+        if (message.senderUserID === user._id) deleteMessage(message);
+      }}
+    >
       <div className="message-inner d-flex w-100 mt-2">
         <div
           className={
@@ -17,7 +24,7 @@ function ReveivedMessage({ message, time, isSent }) {
               : "received-message mr-auto ml-3"
           }
         >
-          <p className="message-p w-100 p-3">{message}</p>
+          <p className="message-p w-100 p-3">{message.message}</p>
           <p className="time-p">{hour}</p>
         </div>
       </div>
@@ -25,4 +32,11 @@ function ReveivedMessage({ message, time, isSent }) {
   );
 }
 
-export default ReveivedMessage;
+const mapStateToProps = state => {
+  return { user: state.auth.user };
+};
+
+export default connect(
+  mapStateToProps,
+  { deleteMessage: deleteMessageAction }
+)(ReveivedMessage);

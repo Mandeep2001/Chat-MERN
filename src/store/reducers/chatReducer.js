@@ -15,8 +15,8 @@ export default function chatReducer(state = initialState, action) {
 
     case "SEND_MESSAGE":
       const usersList = state.usersList.map(u => {
-        if (u.user._id === state.activeUser[0].user._id)
-          u.messages = [...state.activeUser[0].messages, action.msg];
+        if (u.user._id === state.activeUser.user._id)
+          u.messages = [...state.activeUser.messages, action.msg];
         return u;
       });
       return {
@@ -47,6 +47,25 @@ export default function chatReducer(state = initialState, action) {
 
     case "SEARCH_USER":
       return { ...state, searchedUsers: action.users };
+
+    case "CHANGE_MESSAGE_ID":
+      const [...filteredArray] = state.usersList.filter(
+        u => u.user._id === action.receiverUserID
+      );
+      filteredArray[0].messages.map(m => {
+        if (m._id === action.temporaryId) m._id = action._id;
+        return m;
+      });
+      const updatedList = state.usersList.map(u => {
+        if (u.user._id === filteredArray[0].user._id) {
+          u = filteredArray[0];
+        }
+        return u;
+      });
+      return { ...state, usersList: updatedList };
+
+    case "DELETE_MESSAGE":
+      return { ...state, usersList: action.list };
 
     default:
       return state;

@@ -35,10 +35,10 @@ const loginValidation = data => {
       }),
     email: Joi.string()
       .email()
-      .required()
       .error(errors => {
         return { message: "Inserisci un indirizzo e-mail valido." };
-      })
+      }),
+      username: Joi.string()
   };
   return Joi.validate(data, schema);
 };

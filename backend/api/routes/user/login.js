@@ -5,6 +5,7 @@ const { loginValidation } = require("../../../validation/authvalidation");
 
 // Gestione link '/login'
 router.post("/", (req, res) => {
+
   // Data validation
   const { error } = loginValidation(req.body);
   // Se ci sono errori
@@ -15,7 +16,7 @@ router.post("/", (req, res) => {
   }
 
   // Cerco un utente
-  User.findOne({ email: req.body.email }).then(user => {
+  User.findOne().or([{ email: req.body.email }, { username: req.body.username }]).then(user => {
     // Se l'utente esiste e la password è valida
     if (user && user.isValidPassword(req.body.password)) {
       res.json({ user: user.toAuthJSON() });

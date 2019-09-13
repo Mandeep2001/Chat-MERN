@@ -53,16 +53,17 @@ nsp.on("connection", socket => {
       if (id === data.receiverUserID) receiverSocket = users[id];
     }
 
-    if (!receiverSocket) {
-      console.log(
-        "Il socket cercato non è stato trovato dalla funzione getSocketById, forse non è online al momento"
-      );
-      return;
-    }
     // Save message in database
     saveMessage(data).then(res => {
       // Send message to the receiver
-      receiverSocket[0].emit("message", res);
+      if (!receiverSocket) {
+        console.log(
+          "Il socket cercato non è stato trovato dalla funzione getSocketById, forse non è online al momento." +
+            " Il messaggio è comunque stato salvato nel database."
+        );
+      } else {
+        receiverSocket.emit("message", res);
+      }
       socket.emit("sentMessageID", {
         res,
         temporaryId: data._id,

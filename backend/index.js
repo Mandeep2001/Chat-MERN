@@ -34,16 +34,25 @@ mongoose.set("useCreateIndex", true);
 
 // Socket.io server
 const nsp = io.of("/");
+const users = {};
 
 // When a client connets to the server
 nsp.on("connection", socket => {
   // When a client fires the 'new_user' event
-  socket.on("new_user", data => (socket.user = data));
+  socket.on("new_user", data => {
+    socket.user = data;
+    users[data._id] = socket;
+  });
 
   // When a client want to send a message
   socket.on("send_message", data => {
     // Get the socket that must receive the message
-    const receiverSocket = getSocketById(data.receiverUserID, io);
+    let receiverSocket = null;
+
+    for (const id in users) {
+      if (id === data.receiverUserID) receiverSocket = users[id];
+    }
+
     if (!receiverSocket) {
       console.log(
         "Il socket cercato non è stato trovato dalla funzione getSocketById, forse non è online al momento"
@@ -53,7 +62,7 @@ nsp.on("connection", socket => {
     // Save message in database
     saveMessage(data).then(res => {
       // Send message to the receiver
-      receiverSocket.emit("message", res);
+      receiverSocket[0].emit("message", res);
       socket.emit("sentMessageID", {
         res,
         temporaryId: data._id,

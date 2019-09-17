@@ -70,10 +70,14 @@ nsp.on("connection", socket => {
   });
 
   socket.on("visualize", async ({ sender, receiver }) => {
-    await Message.updateMany(
-      { senderUserID: sender._id },
-      { isVisualized: true }
-    );
+    try {
+      await Message.updateMany(
+        { senderUserID: sender._id },
+        { isVisualized: true }
+      );
+    } catch {
+      console.log("errore");
+    }
 
     let receiverSocket = null;
 
@@ -87,10 +91,14 @@ nsp.on("connection", socket => {
       console.log(
         "L'utente non è online, il messaggio è comunque stato aggiornato."
       );
-      return;
+      console.log('entrato')
+    } else {
+      console.log('entrato 2:', sender._id, receiver._id)
+      receiverSocket.emit("visualize", {
+        sender: sender._id,
+        receiver: receiver._id
+      });
     }
-
-    receiverSocket.emit("visualize", { sender: sender._id, receiver: receiver._id });
   });
 
   socket.on("delete_message", data =>

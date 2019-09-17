@@ -65,8 +65,6 @@ router.post("/", (req, res) => {
           messages
         });
       });
-
-      console.log('Inviato')
       res.json({ users });
     })
     .catch(error => res.json({ error }));

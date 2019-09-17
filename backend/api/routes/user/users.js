@@ -14,12 +14,12 @@ router.post("/", (req, res) => {
     .populate([
       {
         path: "sentMessages",
-        select: "_id senderUserID receiverUserID createdAt message",
+        select: "_id senderUserID receiverUserID createdAt message isEliminated isVisualized",
         match: { isEliminated: false }
       },
       {
         path: "receivedMessages",
-        select: "_id senderUserID receiverUserID createdAt message",
+        select: "_id senderUserID receiverUserID createdAt message isEliminated isVisualized",
         match: { isEliminated: false }
       }
     ])

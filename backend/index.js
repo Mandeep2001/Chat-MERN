@@ -7,7 +7,6 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const {
   saveMessage,
-  getSocketById,
   setEliminateMessage
 } = require("./utils/messages");
 
@@ -75,7 +74,12 @@ nsp.on("connection", socket => {
   socket.on("delete_message", data =>
     setEliminateMessage(data)
       .then(() => {
-        const receiverSocket = getSocketById(data.receiverUserID, io);
+        let receiverSocket;
+
+        for (const id in users) {
+          if (id === data.receiverUserID) receiverSocket = users[id];
+        }
+
         if (!receiverSocket) {
           console.log(
             "Il socket cercato non è stato trovato dalla funzione getSocketById, forse non è online al momento"

@@ -15,6 +15,10 @@ const schema = new mongoose.Schema({
     ref: "User",
     required: true
   },
+  isVisualized: {
+    type: Boolean, 
+    default: false
+  },
   isEliminated: {
     type: Boolean,
     default: false

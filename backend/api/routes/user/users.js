@@ -1,6 +1,23 @@
 const router = require("express").Router();
 const User = require("../../models/User");
 
+const compareMessages = (a, b) => {
+  if (!a > 0 || !a > 0) return 0;
+
+  const aCreatedAt = a.createdAt;
+  const bCreatedAt = b.createdAt;
+
+  let comparison = 0;
+
+  if (aCreatedAt > bCreatedAt) {
+    comparison = 1;
+  } else if (aCreatedAt < bCreatedAt) {
+    comparison = -1;
+  }
+
+  return comparison;
+};
+
 router.post("/", (req, res) => {
   const userID = req.body.userID;
   let users = [];
@@ -37,6 +54,8 @@ router.post("/", (req, res) => {
 
         const messages = [...sent, ...received];
 
+        messages.sort(compareMessages);
+
         users.push({
           user: {
             _id: user._id,
@@ -47,6 +66,7 @@ router.post("/", (req, res) => {
         });
       });
 
+      console.log('Inviato')
       res.json({ users });
     })
     .catch(error => res.json({ error }));

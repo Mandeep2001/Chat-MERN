@@ -5,10 +5,8 @@ const io = require("socket.io")(server);
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const {
-  saveMessage,
-  setEliminateMessage
-} = require("./utils/messages");
+const Message = require("./api/models/Message");
+const { saveMessage, setEliminateMessage } = require("./utils/messages");
 
 // Routes
 const loginRoute = require("./api/routes/user/login");
@@ -71,6 +69,30 @@ nsp.on("connection", socket => {
     });
   });
 
+  socket.on("visualize", async ({ sender, receiver }) => {
+    await Message.updateMany(
+      { senderUserID: sender._id },
+      { isVisualized: true }
+    );
+
+    let receiverSocket = null;
+
+    for (const id in users) {
+      if (id === sender._id) {
+        receiverSocket = users[id];
+      }
+    }
+
+    if (!receiverSocket) {
+      console.log(
+        "L'utente non è online, il messaggio è comunque stato aggiornato."
+      );
+      return;
+    }
+
+    receiverSocket.emit("visualize", { sender: sender._id, receiver: receiver._id });
+  });
+
   socket.on("delete_message", data =>
     setEliminateMessage(data)
       .then(() => {
@@ -103,6 +125,6 @@ app.use("/users", usersRoute);
 app.use("/messages", messagesRoute);
 app.use("/", userProfileRoute);
 
-server.listen(5000, () =>
+server.listen(process.env.PORT || 5000, () =>
   console.log("Socket.io server avviato. In ascolto sulla porta 5000.")
 );

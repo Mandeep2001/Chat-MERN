@@ -91,9 +91,7 @@ nsp.on("connection", socket => {
       console.log(
         "L'utente non è online, il messaggio è comunque stato aggiornato."
       );
-      console.log('entrato')
     } else {
-      console.log('entrato 2:', sender._id, receiver._id)
       receiverSocket.emit("visualize", {
         sender: sender._id,
         receiver: receiver._id

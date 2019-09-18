@@ -9,9 +9,9 @@ const compareMessages = (a, b) => {
 
   let comparison = 0;
 
-  if (aCreatedAt > bCreatedAt) {
+  if (aCreatedAt < bCreatedAt) {
     comparison = 1;
-  } else if (aCreatedAt < bCreatedAt) {
+  } else if (aCreatedAt > bCreatedAt) {
     comparison = -1;
   }
 

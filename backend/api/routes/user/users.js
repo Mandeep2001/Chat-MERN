@@ -26,17 +26,19 @@ router.post("/", (req, res) => {
 
   User.find()
     .select(
-      "_id username profileImageURL sentMessages receivedMessages name email"
+      "_id username profileImageURL sentMessages receivedMessages name email pushToken"
     )
     .populate([
       {
         path: "sentMessages",
-        select: "_id senderUserID receiverUserID createdAt message isEliminated isVisualized",
+        select:
+          "_id senderUserID receiverUserID createdAt message isEliminated isVisualized",
         match: { isEliminated: false }
       },
       {
         path: "receivedMessages",
-        select: "_id senderUserID receiverUserID createdAt message isEliminated isVisualized",
+        select:
+          "_id senderUserID receiverUserID createdAt message isEliminated isVisualized",
         match: { isEliminated: false }
       }
     ])

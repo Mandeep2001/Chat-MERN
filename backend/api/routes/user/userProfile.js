@@ -40,4 +40,23 @@ router.patch(
   }
 );
 
+router.post("/push_token", async (req, res) => {
+  const { _id, pushToken } = req.body;
+  const updated = await User.findOneAndUpdate(
+    { _id },
+    { pushToken },
+    { useFindAndModify: false, new: true }
+  ).exec();
+  res.json({
+    user: {
+      _id: updated._id,
+      email: updated.email,
+      name: updated.name,
+      username: updated.username,
+      profileImageURL: updated.profileImageURL,
+      pushToken: updated.pushToken
+    }
+  });
+});
+
 module.exports = router;

@@ -29,7 +29,7 @@ const schema = new mongoose.Schema(
       type: String,
       default: ""
     },
-    pushToken: { type: String, required: true },
+    pushToken: { type: String, default: "" },
     sentMessages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
     receivedMessages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }]
   },

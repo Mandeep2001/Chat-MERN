@@ -26,7 +26,7 @@ router.post("/", (req, res) => {
 
   User.find()
     .select(
-      "_id username profileImageURL sentMessages receivedMessages name email pushToken"
+      "_id username profileImageURL sentMessages receivedMessages name email fcmToken"
     )
     .populate([
       {
@@ -62,7 +62,8 @@ router.post("/", (req, res) => {
           user: {
             _id: user._id,
             username: user.username,
-            profileImageURL: user.profileImageURL
+            profileImageURL: user.profileImageURL,
+            fcmToken: user.fcmToken
           },
           messages
         });

@@ -53,14 +53,9 @@ nsp.on("connection", socket => {
     // Save message in database
     saveMessage(data).then(res => {
       // Send message to the receiver
-      if (!receiverSocket) {
-        console.log(
-          "Il socket cercato non è stato trovato dalla funzione getSocketById, forse non è online al momento." +
-            " Il messaggio è comunque stato salvato nel database."
-        );
-      } else {
+      if (receiverSocket) {
         receiverSocket.emit("message", res);
-      }
+      } 
       socket.emit("sentMessageID", {
         res,
         temporaryId: data._id,
@@ -72,7 +67,7 @@ nsp.on("connection", socket => {
   socket.on("visualize", async ({ sender, receiver }) => {
     try {
       await Message.updateMany(
-        { senderUserID: sender._id },
+        { senderUserID: receiver._id },
         { isVisualized: true }
       );
     } catch {
@@ -82,16 +77,17 @@ nsp.on("connection", socket => {
     let receiverSocket = null;
 
     for (const id in users) {
-      if (id === sender._id) {
+      if (id === receiver._id) {
+        console.log("Receiver username:", receiver.username);
+        console.log("Receiver id:", receiver._id);
+        console.log("sender username:", sender.username);
+        console.log("sender id:", sender._id);
+        console.log("Socket id:", id);
         receiverSocket = users[id];
       }
     }
 
-    if (!receiverSocket) {
-      console.log(
-        "L'utente non è online, il messaggio è comunque stato aggiornato."
-      );
-    } else {
+    if (receiverSocket) {
       receiverSocket.emit("visualize", {
         sender: sender._id,
         receiver: receiver._id

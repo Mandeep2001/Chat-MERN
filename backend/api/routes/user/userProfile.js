@@ -41,10 +41,10 @@ router.patch(
 );
 
 router.post("/push_token", async (req, res) => {
-  const { _id, pushToken } = req.body;
+  const { _id, fcmToken } = req.body;
   const updated = await User.findOneAndUpdate(
     { _id },
-    { pushToken },
+    { fcmToken },
     { useFindAndModify: false, new: true }
   ).exec();
   res.json({

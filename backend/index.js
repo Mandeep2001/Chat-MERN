@@ -78,11 +78,6 @@ nsp.on("connection", socket => {
 
     for (const id in users) {
       if (id === receiver._id) {
-        console.log("Receiver username:", receiver.username);
-        console.log("Receiver id:", receiver._id);
-        console.log("sender username:", sender.username);
-        console.log("sender id:", sender._id);
-        console.log("Socket id:", id);
         receiverSocket = users[id];
       }
     }
@@ -123,6 +118,7 @@ nsp.on("connection", socket => {
 // Route Midllewares
 app.use("/login", loginRoute);
 app.use("/register", registerRoute);
+app.use("/signup", registerRoute);
 app.use("/users", usersRoute);
 app.use("/messages", messagesRoute);
 app.use("/", userProfileRoute);

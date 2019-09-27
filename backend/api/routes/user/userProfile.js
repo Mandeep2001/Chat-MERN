@@ -4,7 +4,7 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./profile_images/");
+    cb(null, "./profile_images");
   },
   filename: (req, file, cb) => {
     const path =
@@ -36,6 +36,20 @@ router.patch(
 
     User.update({ username: req.params.username }, update)
       .then(data => res.json({ data }))
+      .catch(error => res.json({ error }));
+  }
+);
+
+router.patch(
+  "/:username/update_profile_image",
+  upload.single("image"),
+  (req, res) => {
+    let update;
+    console.log('Ricevuto:',req.params.username, req.file)
+    if (req.file) update = { profileImageURL: req.file.path };
+
+    User.findOneAndUpdate({ username: req.params.username }, update)
+      .then(data => res.json({ profileImageURL: data.profileImageURL, _id: data._id, username: data.username }))
       .catch(error => res.json({ error }));
   }
 );

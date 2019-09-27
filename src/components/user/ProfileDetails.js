@@ -16,7 +16,7 @@ export class ProfileDetails extends Component {
 
   uploadImage = image => {
     this.setState({ selectedImage: image });
-  };
+  }; 
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });

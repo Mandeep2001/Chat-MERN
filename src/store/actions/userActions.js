@@ -9,4 +9,4 @@ export const updateUserAction = data => {
       .then(res => console.log(res))
       .catch(error => console.log(error));
   };
-};
+}; 

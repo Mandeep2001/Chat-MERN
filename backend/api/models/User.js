@@ -30,6 +30,8 @@ const schema = new mongoose.Schema(
       default: ""
     },
     fcmToken: { type: String, default: "" },
+    resetPasswordToken: { type: String, default: "" },
+    resetPasswordExpires: { type: Date, default: Date.now() },
     sentMessages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
     receivedMessages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }]
   },

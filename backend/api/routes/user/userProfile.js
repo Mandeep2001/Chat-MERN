@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../../models/User");
 const multer = require("multer");
 const userUtils = require("../../../utils/user");
+const nodemailer = require("nodemailer");
 
 const FINDONEANDUPDATE_CONFIG = { useFindAndModify: false, new: true };
 
@@ -106,6 +107,53 @@ router.post("/fcm_token", async (req, res) => {
       fcmToken: updated.fcmToken
     }
   });
+});
+
+router.post("/reset_password", async (req, res) => {
+  // Devo cercare un utente con l'email fornita
+  // Se esiste creo un token per resettare la password
+  // Imposto nodemailer
+  // Invio un email
+  
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email: email });
+    const token = user.generateJWT();
+
+    user.update({
+      resetPasswordToken: token,
+      resetTokenExpires: Date.now() + 360000
+    });
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: `${process.env.EMAIL_ADRESS}`,
+        pass: `${process.env.EMAIL_PASSWORD}`
+      }
+    });
+
+    const mainOptions = {
+      from: "mipuzzaloscroto@gmail.com",
+      to: `${user.email}`,
+      subject: "Link to reset password",
+      text: "Reset password."
+    };
+
+    console.log("Sending email.");
+
+    transporter.sendMail(mainOptions, (err, responce) => {
+      if (err) {
+        console.log("Errore:", err);
+      } else {
+        console.log("Email inviata:", responce);
+        res.status(200).json("Sent successfully.");
+      }
+    });
+  } catch (error) {
+    console.log("Utente non trovato.");
+  }
 });
 
 module.exports = router;

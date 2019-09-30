@@ -110,11 +110,6 @@ router.post("/fcm_token", async (req, res) => {
 });
 
 router.post("/reset_password", async (req, res) => {
-  // Devo cercare un utente con l'email fornita
-  // Se esiste creo un token per resettare la password
-  // Imposto nodemailer
-  // Invio un email
-
   const { email } = req.body;
 
   let user;
@@ -140,7 +135,7 @@ router.post("/reset_password", async (req, res) => {
   }
 
   try {
-    await user.update({
+    await user.updateOne({
       resetPasswordToken: token,
       resetTokenExpires: Date.now() + 360000
     });
@@ -162,8 +157,6 @@ router.post("/reset_password", async (req, res) => {
     return;
   }
 
-  console.log("ResUser:", resUser);
-
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -179,8 +172,6 @@ router.post("/reset_password", async (req, res) => {
     text: `Reset password.\n${resUser.resetPasswordToken}`
   };
 
-  console.log("Sending email.");
-
   transporter.sendMail(mainOptions, (err, responce) => {
     if (err) {
       console.log("Errore:", err);
@@ -194,6 +185,53 @@ router.post("/reset_password", async (req, res) => {
       });
     }
   });
+});
+
+router.post("/verify_reset_password", async (req, res) => {
+  const { email, token } = req.body;
+
+  let user;
+
+  try {
+    user = await User.findOne({ email: email }, [
+      "_id",
+      "username",
+      "email",
+      "name",
+      "profileImageURL",
+      "fcmToken",
+      "resetPasswordToken",
+      "resetPasswordExpires"
+    ]);
+  } catch (error) {
+    console.log("Utente non trovato:", error);
+    res.status(400).json("An error has occured.");
+    return;
+  }
+
+  if (!user) {
+    console.log("Utente non trovato.");
+    res.status(404).json("User not found.");
+    return;
+  }
+  
+  if (user.resetPasswordToken === token) {
+    res
+      .status(200)
+      .json({
+        user: {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          name: user.name,
+          profileImageURL: user.profileImageURL,
+        },
+        fcmToken: user.fcmToken
+      });
+  } else {
+    console.log("Error.");
+    res.status(400).json("Error.");
+  }
 });
 
 module.exports = router;

@@ -114,46 +114,86 @@ router.post("/reset_password", async (req, res) => {
   // Se esiste creo un token per resettare la password
   // Imposto nodemailer
   // Invio un email
-  
+
   const { email } = req.body;
 
-  try {
-    const user = await User.findOne({ email: email });
-    const token = user.generateJWT();
+  let user;
+  let token = "";
+  let resUser;
 
-    user.update({
+  try {
+    user = await User.findOne({ email: email });
+  } catch (error) {
+    console.log("Utente non trovato:", error);
+    res.status(400).json("An error has occured.");
+    return;
+  }
+
+  if (!user) {
+    console.log("Utente non trovato.");
+    res.status(404).json("User not found.");
+    return;
+  }
+
+  for (let i = 0; i < 6; i++) {
+    token += Math.floor(Math.random() * 10);
+  }
+
+  try {
+    await user.update({
       resetPasswordToken: token,
       resetTokenExpires: Date.now() + 360000
     });
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: `${process.env.EMAIL_ADRESS}`,
-        pass: `${process.env.EMAIL_PASSWORD}`
-      }
-    });
-
-    const mainOptions = {
-      from: "mipuzzaloscroto@gmail.com",
-      to: `${user.email}`,
-      subject: "Link to reset password",
-      text: "Reset password."
-    };
-
-    console.log("Sending email.");
-
-    transporter.sendMail(mainOptions, (err, responce) => {
-      if (err) {
-        console.log("Errore:", err);
-      } else {
-        console.log("Email inviata:", responce);
-        res.status(200).json("Sent successfully.");
-      }
-    });
   } catch (error) {
-    console.log("Utente non trovato.");
+    console.log("Errore:", error);
+    return;
   }
+
+  try {
+    resUser = await User.findById(user._id);
+  } catch (error) {
+    console.log("Error:", error);
+    return;
+  }
+
+  if (!resUser) {
+    console.log("L'utente modificato non esiste.");
+    res.status(404).json("User not found.");
+    return;
+  }
+
+  console.log("ResUser:", resUser);
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: `${process.env.EMAIL_ADRESS}`,
+      pass: `${process.env.EMAIL_PASSWORD}`
+    }
+  });
+
+  const mainOptions = {
+    from: "smandeep2001@gmail.com",
+    to: `${resUser.email}`,
+    subject: "Link to reset password",
+    text: `Reset password.\n${resUser.resetPasswordToken}`
+  };
+
+  console.log("Sending email.");
+
+  transporter.sendMail(mainOptions, (err, responce) => {
+    if (err) {
+      console.log("Errore:", err);
+    } else {
+      res.status(200).json({
+        _id: resUser._id,
+        username: resUser.username,
+        email: resUser.email,
+        resetPasswordToken: resUser.resetPasswordToken,
+        resetPasswordExpires: resUser.resetPasswordExpires
+      });
+    }
+  });
 });
 
 module.exports = router;

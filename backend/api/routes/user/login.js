@@ -54,22 +54,11 @@ router.post("/", async (req, res) => {
     });
   }
 
-  if (user && user.isValidPassword(req.body.password)) {
-    res.status(200).json({
-      api: {
-        href: api_link + "/login",
-        method: "POST",
-        body: ["username", "email", "password"]
-      },
-      payload: { user: user.toAuthJSON() }
-    });
-  }
-
   if (!user) {
     res.status(404).json({
       error: {
         title: "Credenziali errate",
-        message: "Non esiste nessun utente con questo username o email.",
+        message: "Non esiste nessun utente con questo nome utente o indirizzo email.",
         code: 404
       },
       api: {
@@ -94,6 +83,16 @@ router.post("/", async (req, res) => {
       }
     });
   }
+
+  // if (user && user.isValidPassword(req.body.password)) {}
+  res.status(200).json({
+    api: {
+      href: api_link + "/login",
+      method: "POST",
+      body: ["username", "email", "password"]
+    },
+    payload: { user: user.toAuthJSON() }
+  });
 });
 
 module.exports = router;

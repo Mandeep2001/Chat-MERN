@@ -3,6 +3,8 @@ const User = require("../../models/User");
 const multer = require("multer");
 const userUtils = require("../../../utils/user");
 const nodemailer = require("nodemailer");
+const { verify, verifyAndSendResponse } = require("../verifyToken");
+const {api_link} = require('../../../utils/api')
 
 const FINDONEANDUPDATE_CONFIG = { useFindAndModify: false, new: true };
 
@@ -42,9 +44,15 @@ router.patch(
   }
 );
 
-router.patch("/:username/update_info", (req, res) => {
+router.patch("/:username/update_info", async (req, res) => {
+  // 1. Cerco l'utente nel database
+  // 2. Se lo trovo lo aggiorno
+  // 3. Invio una risposta con l'_id ed i campi mofificati
+
   const updateArray = Object.keys(req.body);
   let update = {};
+
+  verifyAndSendResponse(req, res);
 
   updateArray.forEach(element => {
     if (element === "password") {
@@ -57,17 +65,32 @@ router.patch("/:username/update_info", (req, res) => {
     }
   });
 
-  console.log(update);
-
   User.findOneAndUpdate(
     { username: req.params.username },
     update,
     FINDONEANDUPDATE_CONFIG
   )
     .then(data =>
-      res.json({ _id: data._id, username: data.username, email: data.email })
+      res.json({
+        api: {
+          href: api_link + "/" + req.params.username + "/" + "update_indo",
+          method: "POST",
+          body: ["_id", "username", "email", "password"],
+          params: ["username"]
+        },
+        payload: { _id: data._id, username: data.username, email: data.email }
+      })
     )
-    .catch(error => res.json({ error }));
+    .catch(error => {
+      res.status(404).json({
+        error: { message: "User not found.", code: 404 },
+        api: {
+          href: api_link + "/" + req.params.username + "/" + "update_indo",
+          method: "POST",
+          body: ["_id"]
+        }
+      });
+    });
 });
 
 router.patch(
@@ -214,20 +237,18 @@ router.post("/verify_reset_password", async (req, res) => {
     res.status(404).json("User not found.");
     return;
   }
-  
+
   if (user.resetPasswordToken === token) {
-    res
-      .status(200)
-      .json({
-        user: {
-          _id: user._id,
-          username: user.username,
-          email: user.email,
-          name: user.name,
-          profileImageURL: user.profileImageURL,
-        },
-        fcmToken: user.fcmToken
-      });
+    res.status(200).json({
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        name: user.name,
+        profileImageURL: user.profileImageURL
+      },
+      fcmToken: user.fcmToken
+    });
   } else {
     console.log("Error.");
     res.status(400).json("Error.");

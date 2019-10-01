@@ -1,26 +1,35 @@
 const jwt = require("jsonwebtoken");
+const { api_link } = require("../../utils/api");
 
-// function verify(req, res, next) {
-//   const token = req.header("auth-token");
-
-//   if (!token) return res.status(401).send("Access denied.");
-
-//   try {
-//     const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-//     req.user = verified;
-//   } catch (error) {
-//     res.status(400).send("Invalid token");
-//   }
-// }
-
-const verify = async (token) => {
+const verify = async token => {
   try {
     const res = jwt.verify(token, process.env.TOKEN_SECRET);
     return res;
   } catch (error) {
-    console.log('Errore durante verifica jwtToken:', error);
-    return error; 
+    return error;
   }
-}
+};
 
-module.exports = verify;
+const verifyAndSendResponse = async (req, res, next) => {
+  const token = req.headers.authorization;
+
+  if (!token) {
+    res.status(401).json({
+      error: { message: "Authorization token is required.", code: 401 },
+      api: { href: api_link + "/users", method: "POST", body: ["_id"] }
+    });
+    return;
+  }
+
+  try {
+    const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+  } catch (error) {
+    res.status(401).json({
+      error: { message: "Invalid authorization token.", code: 401 },
+      api: { href: api_link + "/users", method: "POST", body: ["_id"] }
+    });
+  }
+  return;
+};
+
+module.exports = { verify, verifyAndSendResponse };

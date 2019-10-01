@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const User = require("../../models/User");
-const verify = require("../verifyToken");
+const {verify, verifyAndSendResponse} = require("../verifyToken");
 const { api_link } = require("../../../utils/api");
 
 const compareMessages = (a, b) => {
@@ -26,17 +26,7 @@ router.post("/", async (req, res) => {
   let sent,
     received = [];
 
-  const verified = await verify(req.headers.authorization);
-
-  if (!verified._id) {
-    res
-      .json({
-        error: { message: "Invalid authorization token.", code: 401 },
-        api: { href: api_link + "/users", method: "POST", body: ["_id"] }
-      })
-      .status(401);
-    return;
-  }
+  verifyAndSendResponse(req, res);
 
   User.find()
     .select(

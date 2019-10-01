@@ -4,7 +4,7 @@ const multer = require("multer");
 const userUtils = require("../../../utils/user");
 const nodemailer = require("nodemailer");
 const { verify, verifyAndSendResponse } = require("../verifyToken");
-const {api_link} = require('../../../utils/api')
+const { api_link } = require("../../../utils/api");
 
 const FINDONEANDUPDATE_CONFIG = { useFindAndModify: false, new: true };
 
@@ -45,10 +45,6 @@ router.patch(
 );
 
 router.patch("/:username/update_info", async (req, res) => {
-  // 1. Cerco l'utente nel database
-  // 2. Se lo trovo lo aggiorno
-  // 3. Invio una risposta con l'_id ed i campi mofificati
-
   const updateArray = Object.keys(req.body);
   let update = {};
 
@@ -74,7 +70,7 @@ router.patch("/:username/update_info", async (req, res) => {
       res.json({
         api: {
           href: api_link + "/" + req.params.username + "/" + "update_indo",
-          method: "POST",
+          method: "PATCH",
           body: ["_id", "username", "email", "password"],
           params: ["username"]
         },
@@ -86,7 +82,7 @@ router.patch("/:username/update_info", async (req, res) => {
         error: { message: "User not found.", code: 404 },
         api: {
           href: api_link + "/" + req.params.username + "/" + "update_indo",
-          method: "POST",
+          method: "PATCH",
           body: ["_id"]
         }
       });

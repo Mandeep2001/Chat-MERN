@@ -3,8 +3,9 @@ const multer = require("multer");
 const nodemailer = require("nodemailer");
 const User = require("../../models/User");
 const userUtils = require("../../../utils/user");
-const { verify, verifyAndSendResponse } = require("../verifyToken");
+const { verifyAndSendResponse } = require("../verifyToken");
 const { api_link } = require("../../../utils/api");
+const uuid = require("uuid/v4")
 
 const FINDONEANDUPDATE_CONFIG = { useFindAndModify: false, new: true };
 
@@ -14,7 +15,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const path =
-      new Date().toDateString() + req.params.username + file.originalname;
+      uuid() + req.params.username + file.originalname;
     cb(null, path);
   }
 });
@@ -93,19 +94,63 @@ router.patch(
   "/:username/update_profile_image",
   upload.single("image"),
   (req, res) => {
-    let update;
-    console.log("Ricevuto:", req.params.username, req.file);
-    if (req.file) update = { profileImageURL: req.file.path };
+    verifyAndSendResponse(req, res);
 
-    User.findOneAndUpdate({ username: req.params.username }, update, FINDONEANDUPDATE_CONFIG)
+    if (!req.file) {
+      res.status(400).json({
+        error: {
+          title: "Errore durante l'aggiornamento dell'immagine",
+          message:
+            "Devi selezionare un'immagine valida, se continui a rispontrare problemi contattaci.",
+          code: 400
+        },
+        api: {
+          href: `${api_link}/${req.params.path}/update_info`,
+          method: "PATCH",
+          body: ["image"],
+          params: ["username"]
+        }
+      });
+    }
+
+    const update = { profileImageURL: req.file.path };
+
+    User.findOneAndUpdate(
+      { username: req.params.username },
+      update,
+      FINDONEANDUPDATE_CONFIG
+    )
       .then(data => {
-        res.json({
-          profileImageURL: data.profileImageURL,
-          _id: data._id,
-          username: data.username
+        res.status(200).json({
+          api: {
+            href: `${api_link}/login`,
+            method: "PATCH",
+            body: ["image"],
+            params: ["username"]
+          },
+          payload: {
+            profileImageURL: data.profileImageURL,
+            _id: data._id,
+            username: data.username
+          }
         });
       })
-      .catch(error => res.json({ error }));
+      .catch(error =>
+        res.status(500).json({
+          error: {
+            title: "Errore durante l'aggiornamento dell'immagine",
+            message:
+              "Devi selezionare un'immagine valida, se continui a rispontrare problemi contattaci.",
+            code: 500
+          },
+          api: {
+            href: `${api_link}/${req.params.path}/update_profile_image`,
+            method: "PATCH",
+            body: ["image"],
+            params: ["username"]
+          }
+        })
+      );
   }
 );
 

@@ -97,14 +97,14 @@ router.patch(
     console.log("Ricevuto:", req.params.username, req.file);
     if (req.file) update = { profileImageURL: req.file.path };
 
-    User.findOneAndUpdate({ username: req.params.username }, update)
-      .then(data =>
+    User.findOneAndUpdate({ username: req.params.username }, update, FINDONEANDUPDATE_CONFIG)
+      .then(data => {
         res.json({
           profileImageURL: data.profileImageURL,
           _id: data._id,
           username: data.username
-        })
-      )
+        });
+      })
       .catch(error => res.json({ error }));
   }
 );

@@ -85,7 +85,6 @@ router.post("/", async (req, res) => {
     });
   }
 
-  // if (user && user.isValidPassword(req.body.password)) {}
   res.status(200).json({
     api: {
       href: `${api_link}/login`,

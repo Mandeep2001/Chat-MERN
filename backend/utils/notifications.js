@@ -1,10 +1,11 @@
-const {Expo} = require("expo-server-sdk");
+const { Expo } = require("expo-server-sdk");
+
 const expo = new Expo();
 
-const somePushTokens = ["ExponentPushToken[lsGswwCIFQ3DvC2EbVwKIV]"]
+const somePushTokens = ["ExponentPushToken[lsGswwCIFQ3DvC2EbVwKIV]"];
 
 const messages = [];
-for (let pushToken of somePushTokens) {
+for (const pushToken of somePushTokens) {
   // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
 
   // Check that all your push tokens appear to be valid Expo push tokens
@@ -27,15 +28,15 @@ for (let pushToken of somePushTokens) {
 // recommend you batch your notifications to reduce the number of requests
 // and to compress them (notifications with similar content will get
 // compressed).
-let chunks = expo.chunkPushNotifications(messages);
-let tickets = [];
+const chunks = expo.chunkPushNotifications(messages);
+const tickets = [];
 (async () => {
   // Send the chunks to the Expo push notification service. There are
   // different strategies you could use. A simple one is to send one chunk at a
   // time, which nicely spreads the load out over time:
-  for (let chunk of chunks) {
+  for (const chunk of chunks) {
     try {
-      let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
+      const ticketChunk = await expo.sendPushNotificationsAsync(chunk);
       console.log(ticketChunk);
       tickets.push(...ticketChunk);
       // NOTE: If a ticket contains an error code in ticket.details.error, you
@@ -47,7 +48,6 @@ let tickets = [];
     }
   }
 })();
-
 
 // Later, after the Expo push notification service has delivered the
 // notifications to Apple or Google (usually quickly, but allow the the service
@@ -64,8 +64,8 @@ let tickets = [];
 // notifications to devices that have blocked notifications or have uninstalled
 // your app. Expo does not control this policy and sends back the feedback from
 // Apple and Google so you can handle it appropriately.
-let receiptIds = [];
-for (let ticket of tickets) {
+const receiptIds = [];
+for (const ticket of tickets) {
   // NOTE: Not all tickets have IDs; for example, tickets for notifications
   // that could not be enqueued will have error information and no receipt ID.
   if (ticket.id) {
@@ -73,22 +73,24 @@ for (let ticket of tickets) {
   }
 }
 
-let receiptIdChunks = expo.chunkPushNotificationReceiptIds(receiptIds);
+const receiptIdChunks = expo.chunkPushNotificationReceiptIds(receiptIds);
 (async () => {
   // Like sending notifications, there are different strategies you could use
   // to retrieve batches of receipts from the Expo service.
-  for (let chunk of receiptIdChunks) {
+  for (const chunk of receiptIdChunks) {
     try {
-      let receipts = await expo.getPushNotificationReceiptsAsync(chunk);
+      const receipts = await expo.getPushNotificationReceiptsAsync(chunk);
       console.log(receipts);
 
       // The receipts specify whether Apple or Google successfully received the
       // notification and information about an error, if one occurred.
-      for (let receipt of receipts) {
-        if (receipt.status === 'ok') {
+      for (const receipt of receipts) {
+        if (receipt.status === "ok") {
           continue;
-        } else if (receipt.status === 'error') {
-          console.error(`There was an error sending a notification: ${receipt.message}`);
+        } else if (receipt.status === "error") {
+          console.error(
+            `There was an error sending a notification: ${receipt.message}`
+          );
           if (receipt.details && receipt.details.error) {
             // The error codes are listed in the Expo documentation:
             // https://docs.expo.io/versions/latest/guides/push-notifications#response-format

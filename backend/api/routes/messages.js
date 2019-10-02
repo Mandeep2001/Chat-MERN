@@ -4,7 +4,7 @@ const Message = require("../models/Message");
 
 // GET /messages
 router.get("/", (req, res) => {
-  const userID = req.query.userID;
+  const { userID } = req.query;
 
   Message.findOne()
     .or([{ senderUserID: userID }, { receiverUserID: userID }])

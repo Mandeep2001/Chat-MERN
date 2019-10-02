@@ -1,4 +1,5 @@
 const express = require("express");
+
 const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
@@ -55,7 +56,7 @@ nsp.on("connection", socket => {
       // Send message to the receiver
       if (receiverSocket) {
         receiverSocket.emit("message", res);
-      } 
+      }
       socket.emit("sentMessageID", {
         res,
         temporaryId: data._id,

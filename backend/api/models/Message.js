@@ -16,7 +16,7 @@ const schema = new mongoose.Schema({
     required: true
   },
   isVisualized: {
-    type: Boolean, 
+    type: Boolean,
     default: false
   },
   isEliminated: {

@@ -16,7 +16,7 @@ const verifyAndSendResponse = async (req, res, next) => {
   if (!token) {
     res.status(401).json({
       error: { message: "Authorization token is required.", code: 401 },
-      api: { href: api_link + "/users", method: "POST", body: ["_id"] }
+      api: { href: `${api_link}/users`, method: "POST", body: ["_id"] }
     });
     return;
   }
@@ -26,10 +26,9 @@ const verifyAndSendResponse = async (req, res, next) => {
   } catch (error) {
     res.status(401).json({
       error: { message: "Invalid authorization token.", code: 401 },
-      api: { href: api_link + "/users", method: "POST", body: ["_id"] }
+      api: { href: `${api_link}/users`, method: "POST", body: ["_id"] }
     });
   }
-  return;
 };
 
 module.exports = { verify, verifyAndSendResponse };

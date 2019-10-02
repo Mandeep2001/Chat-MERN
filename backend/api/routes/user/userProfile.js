@@ -1,8 +1,8 @@
 const router = require("express").Router();
-const User = require("../../models/User");
 const multer = require("multer");
-const userUtils = require("../../../utils/user");
 const nodemailer = require("nodemailer");
+const User = require("../../models/User");
+const userUtils = require("../../../utils/user");
 const { verify, verifyAndSendResponse } = require("../verifyToken");
 const { api_link } = require("../../../utils/api");
 
@@ -23,10 +23,10 @@ const upload = multer({ storage });
 
 // GET /
 router.get("/:username", (req, res) => {
-  const username = req.params.username;
+  const { username } = req.params;
 
   User.findOne({ username }, (err, user) => {
-    if (err) res.status(400).send("An error has occured: " + err);
+    if (err) res.status(400).send(`An error has occured: ${err}`);
     res.send(user);
   });
 });
@@ -69,7 +69,7 @@ router.patch("/:username/update_info", async (req, res) => {
     .then(data =>
       res.json({
         api: {
-          href: api_link + "/" + req.params.username + "/" + "update_indo",
+          href: `${api_link}/${req.params.username}/` + `update_indo`,
           method: "PATCH",
           body: ["_id", "username", "email", "password"],
           params: ["username"]
@@ -81,7 +81,7 @@ router.patch("/:username/update_info", async (req, res) => {
       res.status(404).json({
         error: { message: "User not found.", code: 404 },
         api: {
-          href: api_link + "/" + req.params.username + "/" + "update_indo",
+          href: `${api_link}/${req.params.username}/` + `update_indo`,
           method: "PATCH",
           body: ["_id"]
         }

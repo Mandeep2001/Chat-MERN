@@ -38,7 +38,7 @@ const loginValidation = data => {
       .error(errors => {
         return { message: "Inserisci un indirizzo e-mail valido." };
       }),
-      username: Joi.string()
+    username: Joi.string()
   };
   return Joi.validate(data, schema);
 };

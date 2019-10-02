@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const User = require("../../models/User");
-const {verify, verifyAndSendResponse} = require("../verifyToken");
+const { verify, verifyAndSendResponse } = require("../verifyToken");
 const { api_link } = require("../../../utils/api");
 
 const compareMessages = (a, b) => {
@@ -21,10 +21,10 @@ const compareMessages = (a, b) => {
 };
 
 router.post("/", async (req, res) => {
-  const userID = req.body.userID;
-  let users = [];
-  let sent,
-    received = [];
+  const { userID } = req.body;
+  const users = [];
+  let sent;
+  let received = [];
 
   verifyAndSendResponse(req, res);
 

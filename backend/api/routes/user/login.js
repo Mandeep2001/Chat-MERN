@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
         code: 422
       },
       api: {
-        href: api_link + "/login",
+        href: `${api_link}/login`,
         method: "POST",
         body: ["username", "email", "password"]
       }
@@ -47,7 +47,7 @@ router.post("/", async (req, res) => {
         code: 500
       },
       api: {
-        href: api_link + "/login",
+        href: `${api_link}/login`,
         method: "POST",
         body: ["username", "email", "password"]
       }
@@ -58,11 +58,12 @@ router.post("/", async (req, res) => {
     res.status(404).json({
       error: {
         title: "Credenziali errate",
-        message: "Non esiste nessun utente con questo nome utente o indirizzo email.",
+        message:
+          "Non esiste nessun utente con questo nome utente o indirizzo email.",
         code: 404
       },
       api: {
-        href: api_link + "/login",
+        href: `${api_link}/login`,
         method: "POST",
         body: ["username", "email", "password"]
       }
@@ -77,7 +78,7 @@ router.post("/", async (req, res) => {
         code: 401
       },
       api: {
-        href: api_link + "/login",
+        href: `${api_link}/login`,
         method: "POST",
         body: ["username", "email", "password"]
       }
@@ -87,7 +88,7 @@ router.post("/", async (req, res) => {
   // if (user && user.isValidPassword(req.body.password)) {}
   res.status(200).json({
     api: {
-      href: api_link + "/login",
+      href: `${api_link}/login`,
       method: "POST",
       body: ["username", "email", "password"]
     },

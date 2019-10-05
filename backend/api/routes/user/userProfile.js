@@ -1,11 +1,21 @@
 const router = require("express").Router();
 const multer = require("multer");
 const nodemailer = require("nodemailer");
+const uuid = require("uuid/v4");
+const cloudinary = require("cloudinary").v2;
 const User = require("../../models/User");
 const userUtils = require("../../../utils/user");
 const { verifyAndSendResponse } = require("../verifyToken");
 const { api_link } = require("../../../utils/api");
-const uuid = require("uuid/v4")
+
+cloudinary.config({
+  // cloud_name: process.env.CLOUD_NAME,
+  // api_key: process.env.CLOUD_API_KEY,
+  // api_secret: process.env.CLOUD_API_SECRET,
+  cloud_name: "dqj97mfzi",
+  api_key: "547526458386541",
+  api_secret: "3k_uNwBtrCG8ej8VTZ75Qsr00D8"
+});
 
 const FINDONEANDUPDATE_CONFIG = { useFindAndModify: false, new: true };
 
@@ -14,8 +24,7 @@ const storage = multer.diskStorage({
     cb(null, "./profile_images");
   },
   filename: (req, file, cb) => {
-    const path =
-      uuid() + req.params.username + file.originalname;
+    const path = uuid() + req.params.username + file.originalname;
     cb(null, path);
   }
 });
@@ -82,7 +91,7 @@ router.patch("/:username/update_info", async (req, res) => {
       res.status(404).json({
         error: { message: "User not found.", code: 404 },
         api: {
-          href: `${api_link}/${req.params.username}/` + `update_indo`,
+          href: `${api_link}/${req.params.username}/` + `update_info`,
           method: "PATCH",
           body: ["_id"]
         }
@@ -93,7 +102,7 @@ router.patch("/:username/update_info", async (req, res) => {
 router.patch(
   "/:username/update_profile_image",
   upload.single("image"),
-  (req, res) => {
+  async (req, res) => {
     verifyAndSendResponse(req, res);
 
     if (!req.file) {
@@ -113,7 +122,14 @@ router.patch(
       });
     }
 
-    const update = { profileImageURL: req.file.path };
+    let result;
+    try {
+      result = await cloudinary.uploader.upload(req.file.path);
+    } catch (error) {
+      console.log("Errore:", error);
+    }
+
+    const update = { profileImageURL: result.url };
 
     User.findOneAndUpdate(
       { username: req.params.username },
@@ -123,13 +139,13 @@ router.patch(
       .then(data => {
         res.status(200).json({
           api: {
-            href: `${api_link}/login`,
+            href: `${api_link}/update_profile_image`,
             method: "PATCH",
             body: ["image"],
             params: ["username"]
           },
           payload: {
-            profileImageURL: data.profileImageURL,
+            profileImageURL: result.url,
             _id: data._id,
             username: data.username
           }

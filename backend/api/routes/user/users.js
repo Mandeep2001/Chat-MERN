@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const User = require("../../models/User");
-const { verify, verifyAndSendResponse } = require("../verifyToken");
+const { verifyAndSendResponse } = require("../verifyToken");
 const { api_link } = require("../../../utils/api");
 
 const compareMessages = (a, b) => {
@@ -18,6 +18,15 @@ const compareMessages = (a, b) => {
   }
 
   return comparison;
+};
+
+const compareUsers = (a, b) => {
+  if (!a.lastMessage) return 1;
+  if (!b.lastMessage) return -1;
+
+  if (a.lastMessage.createdAt > b.lastMessage.createdAt) return -1;
+  if (a.lastMessage.createdAt < b.lastMessage.createdAt) return 1;
+  return 0;
 };
 
 router.post("/", async (req, res) => {
@@ -61,6 +70,7 @@ router.post("/", async (req, res) => {
         const messages = [...sent, ...received];
 
         messages.sort(compareMessages);
+        const lastMessage = messages[messages.length - 1];
 
         users.push({
           user: {
@@ -69,9 +79,11 @@ router.post("/", async (req, res) => {
             profileImageURL: user.profileImageURL,
             fcmToken: user.fcmToken
           },
-          messages
+          messages,
+          lastMessage
         });
       });
+      users.sort(compareUsers);
       res.json({ users });
     })
     .catch(error => res.json({ error }));

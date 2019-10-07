@@ -24,9 +24,7 @@ const compareUsers = (a, b) => {
   if (!a.lastMessage) return 1;
   if (!b.lastMessage) return -1;
 
-  if (a.lastMessage.createdAt > b.lastMessage.createdAt) return -1;
-  if (a.lastMessage.createdAt < b.lastMessage.createdAt) return 1;
-  return 0;
+  return new Date(b.lastMessage.createdAt) - new Date(a.lastMessage.createdAt);
 };
 
 router.post("/", async (req, res) => {
@@ -70,7 +68,7 @@ router.post("/", async (req, res) => {
         const messages = [...sent, ...received];
 
         messages.sort(compareMessages);
-        const lastMessage = messages[messages.length - 1];
+        const lastMessage = messages[0];
 
         users.push({
           user: {
@@ -83,10 +81,24 @@ router.post("/", async (req, res) => {
           lastMessage
         });
       });
+
       users.sort(compareUsers);
+      users.forEach(u =>
+        u.lastMessage
+          ? console.log(
+              "Sorted:",
+              u.user.username,
+              " Last message:",
+              new Date(u.lastMessage.createdAt).toUTCString()
+            )
+          : console.log("Sorted:", u.user.username)
+      );
       res.json({ users });
     })
-    .catch(error => res.json({ error }));
+    .catch(error => {
+      console.log("Errore in getUsers:", error);
+      res.json({ error });
+    });
 });
 
 module.exports = router;

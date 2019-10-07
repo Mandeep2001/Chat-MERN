@@ -38,7 +38,6 @@ const users = {};
 nsp.on("connection", socket => {
   // When a client fires the 'new_user' event
   socket.on("new_user", data => {
-    socket.user = data;
     users[data._id] = socket;
   });
 
@@ -47,9 +46,12 @@ nsp.on("connection", socket => {
     // Get the socket that must receive the message
     let receiverSocket = null;
 
-    for (const id in users) {
-      if (id === data.receiverUserID) receiverSocket = users[id];
-    }
+    // for (const id in users) {
+    //   if (id === data.receiverUserID) receiverSocket = users[id];
+    // }
+
+    receiverSocket = users[data.receiverUserID];
+    // console.log(users[data.receiverUserID]);
 
     // Save message in database
     saveMessage(data).then(res => {
@@ -71,8 +73,8 @@ nsp.on("connection", socket => {
         { senderUserID: receiver._id },
         { isVisualized: true }
       );
-    } catch {
-      console.log("errore");
+    } catch (error) {
+      console.log("errore:", error);
     }
 
     let receiverSocket = null;

@@ -82,17 +82,7 @@ router.post("/", async (req, res) => {
         });
       });
 
-      users.sort(compareUsers);
-      users.forEach(u =>
-        u.lastMessage
-          ? console.log(
-              "Sorted:",
-              u.user.username,
-              " Last message:",
-              new Date(u.lastMessage.createdAt).toUTCString()
-            )
-          : console.log("Sorted:", u.user.username)
-      );
+      // users.sort(compareUsers);
       res.json({ users });
     })
     .catch(error => {

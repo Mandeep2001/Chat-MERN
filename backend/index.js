@@ -8,6 +8,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const Message = require("./api/models/Message");
 const { saveMessage, setEliminateMessage } = require("./utils/messages");
+const { findSocketById } = require("./utils/api");
 
 // Routes
 const loginRoute = require("./api/routes/user/login");
@@ -39,6 +40,8 @@ nsp.on("connection", socket => {
   // When a client fires the 'new_user' event
   socket.on("new_user", data => {
     users[data._id] = socket;
+
+    socket.broadcast.emit("user_online", { user: data });
   });
 
   // When a client want to send a message
@@ -46,12 +49,7 @@ nsp.on("connection", socket => {
     // Get the socket that must receive the message
     let receiverSocket = null;
 
-    // for (const id in users) {
-    //   if (id === data.receiverUserID) receiverSocket = users[id];
-    // }
-
     receiverSocket = users[data.receiverUserID];
-    // console.log(users[data.receiverUserID]);
 
     // Save message in database
     saveMessage(data).then(res => {
@@ -79,11 +77,13 @@ nsp.on("connection", socket => {
 
     let receiverSocket = null;
 
-    for (const id in users) {
-      if (id === receiver._id) {
-        receiverSocket = users[id];
-      }
-    }
+    receiverSocket = findSocketById(users, receiver._id);
+
+    // for (const id in users) {
+    //   if (id === receiver._id) {
+    //     receiverSocket = users[id];
+    //   }
+    // }
 
     if (receiverSocket) {
       receiverSocket.emit("visualize", {

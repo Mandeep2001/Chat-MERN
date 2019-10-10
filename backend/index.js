@@ -9,6 +9,7 @@ const cors = require("cors");
 const Message = require("./api/models/Message");
 const { saveMessage, setEliminateMessage } = require("./utils/messages");
 const { findSocketById } = require("./utils/api");
+const { setUserOnline, setUserOffline } = require("./utils/user");
 
 // Routes
 const loginRoute = require("./api/routes/user/login");
@@ -40,7 +41,7 @@ nsp.on("connection", socket => {
   // When a client fires the 'new_user' event
   socket.on("new_user", data => {
     users[data._id] = socket;
-
+    setUserOnline(data._id);
     socket.broadcast.emit("user_online", { user: data });
   });
 
@@ -79,12 +80,6 @@ nsp.on("connection", socket => {
 
     receiverSocket = findSocketById(users, receiver._id);
 
-    // for (const id in users) {
-    //   if (id === receiver._id) {
-    //     receiverSocket = users[id];
-    //   }
-    // }
-
     if (receiverSocket) {
       receiverSocket.emit("visualize", {
         sender: sender._id,
@@ -115,7 +110,21 @@ nsp.on("connection", socket => {
       )
   );
 
-  // socket.on("disconnect", () => console.log("Disconnesso:", socket.user));
+  socket.on("user_active", data => {
+    setUserOnline(data._id).then(() =>
+      socket.broadcast.emit("user_online", { user: data })
+    );
+  });
+
+  socket.on("user_exit", data => {
+    setUserOffline(data._id).then(() =>
+      socket.broadcast.emit("user_offline", { user: data })
+    );
+  });
+
+  // socket.on("disconnect", data => {
+  //   console.log(data);
+  // });
 });
 
 // Route Midllewares

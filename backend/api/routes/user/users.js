@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
 
   User.find()
     .select(
-      "_id username profileImageURL sentMessages receivedMessages name email fcmToken"
+      "_id username profileImageURL sentMessages receivedMessages name email fcmToken isOnline lastAccess"
     )
     .populate([
       {
@@ -75,14 +75,15 @@ router.post("/", async (req, res) => {
             _id: user._id,
             username: user.username,
             profileImageURL: user.profileImageURL,
-            fcmToken: user.fcmToken
+            fcmToken: user.fcmToken,
+            isOnline: user.isOnline,
+            lastAccess: user.lastAccess
           },
           messages,
           lastMessage
         });
       });
-
-      // users.sort(compareUsers);
+      
       res.json({ users });
     })
     .catch(error => {

@@ -79,7 +79,7 @@ router.patch("/:username/update_info", async (req, res) => {
     .then(data =>
       res.json({
         api: {
-          href: `${api_link}/${req.params.username}/` + `update_indo`,
+          href: `${api_link}/${req.params.username}/update_info`,
           method: "PATCH",
           body: ["_id", "username", "email", "password"],
           params: ["username"]
@@ -91,7 +91,7 @@ router.patch("/:username/update_info", async (req, res) => {
       res.status(404).json({
         error: { message: "User not found.", code: 404 },
         api: {
-          href: `${api_link}/${req.params.username}/` + `update_info`,
+          href: `${api_link}/${req.params.username}/update_info`,
           method: "PATCH",
           body: ["_id"]
         }
@@ -210,7 +210,7 @@ router.post("/reset_password", async (req, res) => {
     return;
   }
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 6; i += 1) {
     token += Math.floor(Math.random() * 10);
   }
 

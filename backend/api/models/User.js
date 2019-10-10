@@ -33,7 +33,10 @@ const schema = new mongoose.Schema(
     resetPasswordToken: { type: String, default: "" },
     resetPasswordExpires: { type: Date, default: Date.now() },
     sentMessages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
-    receivedMessages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }]
+    receivedMessages: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Message" }
+    ],
+    lastAccess: { type: Date, default: Date.now() }
   },
   { timestamps: true }
 );

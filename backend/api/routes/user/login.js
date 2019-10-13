@@ -60,6 +60,7 @@ router.post("/", async (req, res) => {
         title: "Credenziali errate",
         message:
           "Non esiste nessun utente con questo nome utente o indirizzo email.",
+        fields: [{ username: "Ops, non è stato trovato nessun utente." }],
         code: 404
       },
       api: {
@@ -75,6 +76,7 @@ router.post("/", async (req, res) => {
       error: {
         title: "Credenziali errate",
         message: "Password errata.",
+        fields: [{ password: "La password non è corretta." }],
         code: 401
       },
       api: {
@@ -87,8 +89,8 @@ router.post("/", async (req, res) => {
 
   res.status(200).json({
     api: {
-      href: `${api_link}/login`,
-      method: "POST",
+      href: `${api_link}${req.baseUrl}`,
+      method: req.method,
       body: ["username", "email", "password"]
     },
     payload: { user: user.toAuthJSON() }

@@ -30,14 +30,16 @@ const loginValidation = data => {
       .required()
       .error(errors => {
         return {
+          field: "password",
           message: "La password deve contenere almeno 8 caratteri."
         };
       }),
-    email: Joi.string()
-      .email()
-      .error(errors => {
-        return { message: "Inserisci un indirizzo e-mail valido." };
-      }),
+    email: Joi.string().error(errors => {
+      return {
+        field: "username",
+        message: "Inserisci un nome utente valido."
+      };
+    }),
     username: Joi.string()
   };
   return Joi.validate(data, schema);

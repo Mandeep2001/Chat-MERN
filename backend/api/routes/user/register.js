@@ -1,9 +1,10 @@
 const router = require("express").Router();
+const emailValidator = require("email-validator");
 const User = require("../../models/User");
 const { registerValidation } = require("../../../validation/authvalidation");
-const { api_link } = require("../../../utils/api");
+const { api_link, API_LINK } = require("../../../utils/api");
 
-// Gestione link '/register'
+// Gestione link '/signup'
 router.post("/", async (req, res) => {
   const { email, username, password, name } = req.body;
 
@@ -84,7 +85,6 @@ router.post("/", async (req, res) => {
         },
         payload: { user: user.toAuthJSON() }
       });
-      return;
     })
     .catch(() => {
       res.status(500).json({
@@ -99,8 +99,64 @@ router.post("/", async (req, res) => {
           body: ["username", "name", "email", "password"]
         }
       });
-      return;
     });
+});
+
+router.post("/check_email", async (req, res) => {
+  let user = null;
+  const { email } = req.body;
+
+  if (!email) {
+    res.status(400).json({
+      error: {
+        message: "Devi inserire un indirizzo e-mail."
+      },
+      api: {
+        href: `${API_LINK}${req.baseUrl}`,
+        method: req.method,
+        body: ["email"]
+      }
+    });
+  }
+
+  if (!emailValidator.validate(email)) {
+    res.status(400).json({
+      error: {
+        message: "Indirizzo e-mail non valido."
+      },
+      api: {
+        href: `${API_LINK}${req.baseUrl}`,
+        method: req.method,
+        body: ["email"]
+      }
+    });
+  }
+
+  try {
+    user = await User.findOne({ email });
+  } catch (error) {
+    console.error("Errore:", error);
+  }
+
+  if (!user) {
+    res.status(422).json({
+      error: { message: "Indirizzo e-mail già in uso." },
+      api: {
+        href: `${API_LINK}${req.baseUrl}`,
+        method: req.method,
+        body: ["email"]
+      }
+    });
+  }
+
+  res.status(200).json({
+    payload: { message: "E-mail libera." },
+    api: {
+      href: `${API_LINK}${req.baseUrl}`,
+      method: req.method,
+      body: ["email"]
+    }
+  });
 });
 
 module.exports = router;

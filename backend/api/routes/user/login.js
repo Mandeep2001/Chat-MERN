@@ -60,7 +60,11 @@ router.post("/", async (req, res) => {
         title: "Credenziali errate",
         message:
           "Non esiste nessun utente con questo nome utente o indirizzo email.",
-        fields: [{ username: "Ops, non è stato trovato nessun utente." }],
+        // fields: [{ username: "Ops, non è stato trovato nessun utente." }],
+        fields: {
+          username: "Ops, non è stato trovato nessun utente.",
+          password: null
+        },
         code: 404
       },
       api: {
@@ -76,7 +80,11 @@ router.post("/", async (req, res) => {
       error: {
         title: "Credenziali errate",
         message: "Password errata.",
-        fields: [{ password: "La password non è corretta." }],
+        // fields: [{ password: "La password non è corretta." }],
+        fields: {
+          username: null,
+          password: "La password non è corretta."
+        },
         code: 401
       },
       api: {

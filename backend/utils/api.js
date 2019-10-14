@@ -12,5 +12,6 @@ const findSocketById = (array, key) => {
 
 module.exports = {
   api_link: API_LINK,
+  API_LINK,
   findSocketById
 };

@@ -23,8 +23,22 @@ const setUserOffline = _id => {
   );
 };
 
+/**
+ * Questa funzioen controlla se esiste un utente con la key che corrisponde al value.
+ *
+ * @param {string} key dell'oggetto da cercare.
+ * @param {string} value dell'oggeto da cercare.
+ * @returns {null} Se non esiste.
+ * @returns {object} Se esiste.
+ */
+const checkIfExists = async (key, value) => {
+  const res = await User.findOne({ [key]: value });
+  return res;
+};
+
 module.exports = {
   hashPassword,
   setUserOnline,
-  setUserOffline
+  setUserOffline,
+  checkIfExists
 };

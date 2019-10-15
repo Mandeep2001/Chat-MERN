@@ -78,7 +78,7 @@ nsp.on("connection", socket => {
 
     let receiverSocket = null;
 
-    receiverSocket = findSocketById(users, receiver._id);
+    receiverSocket = users[receiver._id];
 
     if (receiverSocket) {
       receiverSocket.emit("visualize", {
@@ -91,11 +91,13 @@ nsp.on("connection", socket => {
   socket.on("delete_message", data =>
     setEliminateMessage(data)
       .then(() => {
-        let receiverSocket;
+        let receiverSocket = null;
 
-        for (const id in users) {
-          if (id === data.receiverUserID) receiverSocket = users[id];
-        }
+        // for (const id in users) {
+        //   if (id === data.receiverUserID) receiverSocket = users[id];
+        // }
+
+        receiverSocket = users[data.receiverUserID];
 
         if (!receiverSocket) {
           console.log(
